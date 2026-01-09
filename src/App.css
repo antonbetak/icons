@@ -14,8 +14,9 @@
   inset: -65%;
   background: conic-gradient(from 120deg, #0a0d18, #1e2350, #2f1d5c, #0a0d18);
   background-size: 260% 260%;
+  background-position: 0% 50%;
   opacity: 1;
-  animation: ambient-shift 24s ease-in-out infinite;
+  animation: ambient-shift 24s ease-in-out infinite, ambient-pan 18s linear infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -26,7 +27,9 @@
   inset: -70%;
   background: radial-gradient(circle at 25% 30%, rgba(120, 160, 255, 0.16), transparent 45%),
     radial-gradient(circle at 80% 70%, rgba(255, 170, 210, 0.12), transparent 40%);
-  animation: ambient-float 26s ease-in-out infinite;
+  background-size: 180% 180%;
+  background-position: 50% 0%;
+  animation: ambient-float 26s ease-in-out infinite, ambient-drift 20s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -60,6 +63,30 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes ambient-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 60%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes ambient-drift {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 45% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
   }
 }
 
