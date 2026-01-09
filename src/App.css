@@ -1,14 +1,40 @@
 .page {
   min-height: 100vh;
-  background-color: #050505;
-  background-image: none;
+  background: #050505;
   color: #f5f1ea;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.04), transparent 60%);
+  opacity: 0.6;
+  animation: ambient-drift 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes ambient-drift {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 1px solid rgba(245, 241, 234, 0.6);
   outline-offset: 4px;
 }
@@ -18,10 +44,23 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.2rem 6vw;
+  padding: 1.4rem 6vw;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
+  z-index: 2;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.top-nav.glass {
+  overflow: visible;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .brand {
@@ -29,6 +68,7 @@ button:focus-visible {
   letter-spacing: 0.5rem;
   text-transform: uppercase;
   color: inherit;
+  text-decoration: none;
 }
 
 .glass {
@@ -83,6 +123,14 @@ button:focus-visible {
   background-clip: padding-box;
 }
 
+.nav-link {
+  font-size: 0.65rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  padding: 0.65rem 1.1rem;
+  text-decoration: none;
+}
+
 .nav-toggle-icon {
   width: 14px;
   height: 14px;
@@ -104,9 +152,9 @@ button:focus-visible {
 
 .nav-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   right: 0;
-  margin-top: 0.8rem;
+  margin-top: 0;
   display: grid;
   gap: 0.6rem;
   padding: 1rem 1.2rem;
@@ -145,23 +193,17 @@ button:focus-visible {
   justify-content: center;
   text-align: center;
   padding: 6rem 8vw 4rem;
-  gap: 1.6rem;
+  gap: 2rem;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-}
-
-.hero-eyebrow {
-  font-size: 0.85rem;
-  letter-spacing: 0.35rem;
-  text-transform: uppercase;
-  opacity: 0.7;
+  z-index: 1;
 }
 
 .hero-title {
   font-family: 'Taylor Gothic', 'Helvetica Neue', 'Montserrat', Arial, sans-serif;
-  font-size: clamp(3rem, 9vw, 7rem);
-  letter-spacing: 0.8rem;
+  font-size: clamp(3rem, 10vw, 7rem);
+  letter-spacing: 1rem;
   margin: 0;
   text-transform: uppercase;
   font-weight: 300;
@@ -176,6 +218,7 @@ button:focus-visible {
   text-transform: uppercase;
   font-size: 0.7rem;
   color: inherit;
+  text-decoration: none;
 }
 
 .content {
@@ -184,6 +227,7 @@ button:focus-visible {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
+  z-index: 1;
 }
 
 .section-head {
@@ -204,8 +248,15 @@ button:focus-visible {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
 }
 
-.shop {
-  padding-bottom: 2rem;
+.shop-group {
+  margin-bottom: 3rem;
+}
+
+.shop-group h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .carousel {
@@ -295,10 +346,11 @@ button:focus-visible {
   gap: 1rem;
 }
 
-.product-body h3 {
+.product-body h4 {
   margin: 0 0 0.4rem;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
+  font-size: 0.9rem;
 }
 
 .product-body p {
@@ -320,6 +372,95 @@ button:focus-visible {
   border-radius: 999px;
   text-transform: uppercase;
   font-size: 0.65rem;
+  cursor: pointer;
+  background: transparent;
+}
+
+.preview-card {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  padding: 2.5rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 7, 7, 0.75);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+}
+
+.preview-price {
+  font-size: 1.1rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
+.size-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 1.4rem;
+}
+
+.size-pill {
+  padding: 0.4rem 1rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  cursor: pointer;
+  background: transparent;
+}
+
+.preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cart {
+  text-align: center;
+}
+
+.cart-list {
+  display: grid;
+  gap: 1rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+  font-size: 0.7rem;
+}
+
+.payment-card,
+.auth-card {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(7, 7, 7, 0.75);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.payment-grid {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.4rem 0 1.8rem;
+}
+
+.payment-grid input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+  color: inherit;
+  font-family: inherit;
 }
 
 .story {
@@ -359,6 +500,7 @@ button:focus-visible {
   letter-spacing: 0.2rem;
   font-size: 0.65rem;
   color: inherit;
+  text-decoration: none;
 }
 
 .about-grid {
@@ -393,14 +535,15 @@ button:focus-visible {
 }
 
 .footer {
-  padding: 3rem 8vw 2rem;
+  padding: 6rem 8vw 3rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-transform: uppercase;
   letter-spacing: 0.2rem;
   font-size: 0.65rem;
   max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
+  margin: 2rem auto 0;
+  z-index: 1;
 }
 
 .footer-columns {
@@ -454,17 +597,36 @@ button:focus-visible {
   letter-spacing: 0.15rem;
 }
 
+@media (max-width: 900px) {
+  .nav-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-link {
+    letter-spacing: 0.2rem;
+  }
+}
+
 @media (max-width: 720px) {
   .top-nav {
-    padding: 1.2rem 8vw;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .nav-menu {
-    right: 0;
+    right: auto;
+    left: 0;
   }
 
   .hero-title {
-    letter-spacing: 0.4rem;
+    letter-spacing: 0.5rem;
   }
 
   .section-head {

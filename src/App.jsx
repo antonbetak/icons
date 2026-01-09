@@ -114,7 +114,6 @@ function App() {
         <a className="brand" href="#/">
           ICONS
         </a>
-
         <div className="nav-actions">
           <button
             className="nav-toggle glass"
@@ -126,16 +125,13 @@ function App() {
             Menú
             <span className="nav-toggle-icon" aria-hidden="true" />
           </button>
-
           <a className="nav-link glass" href="#/login">
             Log in
           </a>
-
           <a className="nav-link glass" href="#/carrito">
             Carrito ({cartItems.length})
           </a>
         </div>
-
         <div className={`nav-menu glass ${menuOpen ? 'is-open' : ''}`} id="menu">
           {navItems.map((item) => (
             <a key={item.path} href={`#${item.path}`}>
@@ -318,7 +314,8 @@ function App() {
               <div>
                 <h3>Combinaciones premium</h3>
                 <p>
-                  Propuestas de outfits para elevar cada lanzamiento con coherencia visual.
+                  Propuestas de outfits para elevar cada lanzamiento con
+                  coherencia visual.
                 </p>
                 <a className="ghost-button glass" href="#/tienda">
                   Explorar la tienda
@@ -337,11 +334,16 @@ function App() {
             <section className="about-grid">
               <div>
                 <h3>Atelier preciso</h3>
-                <p>Construcción impecable para siluetas que se mueven con intención.</p>
+                <p>
+                  Construcción impecable para siluetas que se mueven con
+                  intención.
+                </p>
               </div>
               <div>
                 <h3>Materiales hipnóticos</h3>
-                <p>Texturas con brillo controlado y acabados dignos de pasarela.</p>
+                <p>
+                  Texturas con brillo controlado y acabados dignos de pasarela.
+                </p>
               </div>
               <div>
                 <h3>Experiencia privada</h3>
