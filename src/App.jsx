@@ -1,6 +1,41 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
+const products = [
+  {
+    id: 'gorra-obsidiana',
+    name: 'Gorra Obsidiana',
+    desc: 'Visera precisa con textura satinada mate.',
+    price: '$120',
+    tone: 'image-aurora',
+    category: 'gorras',
+  },
+  {
+    id: 'gorra-nocturna',
+    name: 'Gorra Nocturna',
+    desc: 'Lona premium con brillo sutil en costuras.',
+    price: '$145',
+    tone: 'image-orbit',
+    category: 'gorras',
+  },
+  {
+    id: 'playera-constelacion',
+    name: 'Playera Constelación',
+    desc: 'Algodón pesado con caída impecable.',
+    price: '$180',
+    tone: 'image-vanta',
+    category: 'playeras',
+  },
+  {
+    id: 'playera-orbita',
+    name: 'Playera Órbita',
+    desc: 'Tejido suave con destellos micro metálicos.',
+    price: '$210',
+    tone: 'image-mirror',
+    category: 'playeras',
+  },
+]
+
 const pages = {
   '/': {
     label: 'Inicio',
@@ -9,13 +44,13 @@ const pages = {
   },
   '/tienda': {
     label: 'Tienda',
-    title: 'Catálogo',
-    description: 'Piezas hipnóticas, siluetas precisas y acabados de atelier.',
+    title: 'Tienda',
+    description: 'Selección curada para la noche urbana.',
   },
-  '/lookbook': {
-    label: 'Lookbook',
-    title: 'Lookbook',
-    description: 'Visuales editoriales para inspirar la próxima caída.',
+  '/guia': {
+    label: 'Guía de estilo',
+    title: 'Guía de estilo',
+    description: 'Combinaciones sugeridas para cada colección.',
   },
   '/sobre': {
     label: 'Sobre ICONS',
@@ -29,6 +64,8 @@ const pages = {
   },
 }
 
+const sizes = ['XS', 'S', 'M', 'L', 'XL']
+
 const getRoute = () => {
   const hash = window.location.hash.replace('#', '')
   if (!hash) return '/'
@@ -38,6 +75,8 @@ const getRoute = () => {
 function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(products[0])
+  const [cartItems, setCartItems] = useState([])
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRoute())
@@ -60,22 +99,43 @@ function App() {
 
   const currentPage = pages[route] ?? pages['/']
 
+  const handleSelectProduct = (product) => {
+    setSelectedProduct(product)
+    window.location.hash = '#/tallas'
+  }
+
+  const handleAddToCart = (product) => {
+    setCartItems((items) => [...items, product])
+  }
+
   return (
     <div className="page">
-      <header className="top-nav">
+      <header className="top-nav glass">
         <a className="brand" href="#/">
           ICONS
         </a>
-        <button
-          className="nav-toggle glass"
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-expanded={menuOpen}
-          aria-controls="menu"
-        >
-          Menú
-          <span className="nav-toggle-icon" aria-hidden="true" />
-        </button>
+
+        <div className="nav-actions">
+          <button
+            className="nav-toggle glass"
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="menu"
+          >
+            Menú
+            <span className="nav-toggle-icon" aria-hidden="true" />
+          </button>
+
+          <a className="nav-link glass" href="#/login">
+            Log in
+          </a>
+
+          <a className="nav-link glass" href="#/carrito">
+            Carrito ({cartItems.length})
+          </a>
+        </div>
+
         <div className={`nav-menu glass ${menuOpen ? 'is-open' : ''}`} id="menu">
           {navItems.map((item) => (
             <a key={item.path} href={`#${item.path}`}>
@@ -87,7 +147,6 @@ function App() {
 
       {route === '/' ? (
         <main className="hero">
-          <p className="hero-eyebrow">Alta costura nocturna</p>
           <h1 className="hero-title">ICONS</h1>
           <a className="hero-cta glass" href="#/tienda">
             Comprar ahora
@@ -102,71 +161,173 @@ function App() {
 
           {route === '/tienda' && (
             <section className="shop">
-              <div className="carousel">
-                {[
-                  {
-                    name: 'Abrigo Aurora',
-                    desc: 'Lana líquida, brillo sutil y caída arquitectónica.',
-                    price: '$980',
-                    tone: 'image-aurora',
-                  },
-                  {
-                    name: 'Vestido Vanta',
-                    desc: 'Satinado hipnótico con ajuste al cuerpo.',
-                    price: '$640',
-                    tone: 'image-vanta',
-                  },
-                  {
-                    name: 'Set Órbita',
-                    desc: 'Jacquard de alto contraste con textura lunar.',
-                    price: '$1,240',
-                    tone: 'image-orbit',
-                  },
-                  {
-                    name: 'Tejido Mirrorline',
-                    desc: 'Merino suave con destellos micro metálicos.',
-                    price: '$420',
-                    tone: 'image-mirror',
-                  },
-                ].map((item) => (
-                  <article className="product-card" key={item.name}>
-                    <div className={`product-image ${item.tone}`}>
-                      <span>Imagen IA</span>
-                    </div>
-                    <div className="product-body">
-                      <div>
-                        <h3>{item.name}</h3>
-                        <p>{item.desc}</p>
-                      </div>
-                      <div className="product-meta">
-                        <span>{item.price}</span>
-                        <a className="product-action glass" href="#/contacto">
-                          Reservar
-                        </a>
-                      </div>
-                    </div>
-                  </article>
-                ))}
+              <div className="shop-group">
+                <h3>Gorras</h3>
+                <div className="carousel">
+                  {products
+                    .filter((product) => product.category === 'gorras')
+                    .map((item) => (
+                      <article className="product-card" key={item.id}>
+                        <div className={`product-image ${item.tone}`}>
+                          <span>Imagen IA</span>
+                        </div>
+                        <div className="product-body">
+                          <div>
+                            <h4>{item.name}</h4>
+                            <p>{item.desc}</p>
+                          </div>
+                          <div className="product-meta">
+                            <span>{item.price}</span>
+                            <button
+                              className="product-action glass"
+                              type="button"
+                              onClick={() => handleSelectProduct(item)}
+                            >
+                              Comprar
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                </div>
+              </div>
+
+              <div className="shop-group">
+                <h3>Playeras</h3>
+                <div className="carousel">
+                  {products
+                    .filter((product) => product.category === 'playeras')
+                    .map((item) => (
+                      <article className="product-card" key={item.id}>
+                        <div className={`product-image ${item.tone}`}>
+                          <span>Imagen IA</span>
+                        </div>
+                        <div className="product-body">
+                          <div>
+                            <h4>{item.name}</h4>
+                            <p>{item.desc}</p>
+                          </div>
+                          <div className="product-meta">
+                            <span>{item.price}</span>
+                            <button
+                              className="product-action glass"
+                              type="button"
+                              onClick={() => handleSelectProduct(item)}
+                            >
+                              Comprar
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                </div>
               </div>
             </section>
           )}
 
-          {route === '/lookbook' && (
+          {route === '/tallas' && selectedProduct && (
+            <section className="preview">
+              <div className="preview-card">
+                <div className={`product-image ${selectedProduct.tone}`}>
+                  <span>Vista previa IA</span>
+                </div>
+                <div>
+                  <h3>{selectedProduct.name}</h3>
+                  <p>{selectedProduct.desc}</p>
+                  <p className="preview-price">{selectedProduct.price}</p>
+                  <div className="size-grid">
+                    {sizes.map((size) => (
+                      <button className="size-pill glass" type="button" key={size}>
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="preview-actions">
+                    <button
+                      className="hero-cta glass"
+                      type="button"
+                      onClick={() => handleAddToCart(selectedProduct)}
+                    >
+                      Añadir al carrito
+                    </button>
+                    <a className="ghost-button glass" href="#/carrito">
+                      Ir al carrito
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {route === '/carrito' && (
+            <section className="cart">
+              {cartItems.length === 0 ? (
+                <p>Tu carrito está vacío.</p>
+              ) : (
+                <div className="cart-list">
+                  {cartItems.map((item, index) => (
+                    <div className="cart-item" key={`${item.id}-${index}`}>
+                      <span>{item.name}</span>
+                      <span>{item.price}</span>
+                    </div>
+                  ))}
+                  <a className="hero-cta glass" href="#/pago">
+                    Pagar
+                  </a>
+                </div>
+              )}
+            </section>
+          )}
+
+          {route === '/pago' && (
+            <section className="payment">
+              <div className="payment-card">
+                <h3>Solicitud de tarjeta</h3>
+                <p>Completa los datos para continuar con el pago.</p>
+                <div className="payment-grid">
+                  <input type="text" placeholder="Nombre en la tarjeta" />
+                  <input type="text" placeholder="Número de tarjeta" />
+                  <input type="text" placeholder="MM/AA" />
+                  <input type="text" placeholder="CVC" />
+                </div>
+                <button className="hero-cta glass" type="button">
+                  Confirmar
+                </button>
+              </div>
+            </section>
+          )}
+
+          {route === '/login' && (
+            <section className="auth">
+              <div className="auth-card">
+                <h3>Acceso</h3>
+                <p>Ingresa para administrar tu experiencia.</p>
+                <div className="payment-grid">
+                  <input type="email" placeholder="Correo" />
+                  <input type="password" placeholder="Contraseña" />
+                </div>
+                <button className="hero-cta glass" type="button">
+                  Entrar
+                </button>
+              </div>
+            </section>
+          )}
+
+          {route === '/guia' && (
             <section className="story">
               <div>
-                <h3>Edición Estelar</h3>
+                <h3>Combinaciones premium</h3>
                 <p>
-                  Editorial minimalista con sombras profundas y texturas de alto
-                  contraste.
+                  Propuestas de outfits para elevar cada lanzamiento con coherencia visual.
                 </p>
                 <a className="ghost-button glass" href="#/tienda">
-                  Ver catálogo
+                  Explorar la tienda
                 </a>
               </div>
               <div className="story-card">
-                <p>Serie limitada • 120 piezas • Atelier reservado</p>
+                <p>Capsulas estacionales • Edición limitada • Estilo nocturno</p>
                 <a className="ghost-button glass" href="#/contacto">
-                  Solicitar acceso
+                  Asesoría privada
                 </a>
               </div>
             </section>
@@ -176,16 +337,11 @@ function App() {
             <section className="about-grid">
               <div>
                 <h3>Atelier preciso</h3>
-                <p>
-                  Construcción impecable para siluetas que se mueven con
-                  intención.
-                </p>
+                <p>Construcción impecable para siluetas que se mueven con intención.</p>
               </div>
               <div>
                 <h3>Materiales hipnóticos</h3>
-                <p>
-                  Texturas con brillo controlado y acabados dignos de pasarela.
-                </p>
+                <p>Texturas con brillo controlado y acabados dignos de pasarela.</p>
               </div>
               <div>
                 <h3>Experiencia privada</h3>
@@ -248,7 +404,7 @@ function App() {
             </div>
           </div>
         </div>
-        <p className="footer-note">© 2024 ICONS. Todos los derechos reservados.</p>
+        <p className="footer-note">© 2026 ICONS. Todos los derechos reservados.</p>
       </footer>
     </div>
   )
