@@ -96,7 +96,8 @@ const pages = {
   },
 }
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL']
+const sizes = ['S', 'M', 'L', 'XL', 'XXL']
+const hatFitLabel = 'Ajuste trasero'
 
 const getRoute = () => {
   const hash = window.location.hash.replace('#', '')
@@ -161,19 +162,24 @@ function App() {
 
   const handleSelectProduct = (product) => {
     setSelectedProduct(product)
-    setSelectedSize('M')
+    if (product.category === 'gorras') {
+      setSelectedSize(hatFitLabel)
+    } else {
+      setSelectedSize('M')
+    }
     window.location.hash = '#/tallas'
   }
 
   const handleAddToCart = (product) => {
+    const sizeLabel = product.category === 'gorras' ? hatFitLabel : selectedSize
     setCartItems((items) => [
       ...items,
       {
         ...product,
-        size: selectedSize,
+        size: sizeLabel,
       },
     ])
-    setCartNotice(`Añadido: ${product.name} · ${selectedSize}`)
+    setCartNotice(`Añadido: ${product.name} · ${sizeLabel}`)
     window.setTimeout(() => setCartNotice(''), 1800)
   }
 
@@ -182,6 +188,13 @@ function App() {
   }
 
   const activeTheme = themeMode === 'system' ? systemTheme : themeMode
+  const handleToggleTheme = () => {
+    setThemeMode((current) => {
+      if (current === 'system') return 'light'
+      if (current === 'light') return 'dark'
+      return 'system'
+    })
+  }
 
   return (
     <div
@@ -214,12 +227,15 @@ function App() {
           <button
             className="nav-icon glass theme-toggle"
             type="button"
-            onClick={() =>
-              setThemeMode((current) => (current === 'dark' ? 'light' : 'dark'))
-            }
-            aria-label={`Cambiar a modo ${activeTheme === 'dark' ? 'claro' : 'oscuro'}`}
+            onClick={handleToggleTheme}
+            aria-label={`Tema: ${themeMode === 'system' ? 'sistema' : themeMode}`}
           >
-            {activeTheme === 'dark' ? (
+            {themeMode === 'system' ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="12" rx="2" />
+                <path d="M8 19h8" />
+              </svg>
+            ) : activeTheme === 'dark' ? (
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" />
                 <path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1l2.1-2.1M17 7l2.1-2.1" />
@@ -331,26 +347,41 @@ function App() {
           {route === '/tallas' && selectedProduct && (
             <section className="preview">
               <div className="preview-card">
-                <div className={`product-image ${selectedProduct.tone}`}>
-                  <span>Vista previa IA</span>
+                <div className="preview-media">
+                  <div className={`preview-main ${selectedProduct.tone}`}>
+                    <span>Vista previa IA</span>
+                  </div>
+                  <div className="preview-thumbs">
+                    {['A', 'B', 'C'].map((label) => (
+                      <div className={`preview-thumb ${selectedProduct.tone}`} key={label}>
+                        <span>Ángulo {label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div>
                   <h3>{selectedProduct.name}</h3>
                   <p>{selectedProduct.desc}</p>
                   <p className="preview-price">{selectedProduct.price}</p>
-                  <div className="size-grid">
-                    {sizes.map((size) => (
-                      <button
-                        className={`size-pill glass ${selectedSize === size ? 'is-selected' : ''}`}
-                        type="button"
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                  <p className="size-note">Talla seleccionada: {selectedSize}</p>
+                  {selectedProduct.category === 'playeras' ? (
+                    <>
+                      <div className="size-grid">
+                        {sizes.map((size) => (
+                          <button
+                            className={`size-pill glass ${selectedSize === size ? 'is-selected' : ''}`}
+                            type="button"
+                            key={size}
+                            onClick={() => setSelectedSize(size)}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="size-note">Talla seleccionada: {selectedSize}</p>
+                    </>
+                  ) : (
+                    <p className="size-note">{hatFitLabel}</p>
+                  )}
                   <div className="preview-actions">
                     <button
                       className="hero-cta glass"

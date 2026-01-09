@@ -488,6 +488,62 @@ input:focus-visible {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.preview-media {
+  display: grid;
+  gap: 1rem;
+}
+
+.preview-main {
+  height: 260px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-main span {
+  position: relative;
+  z-index: 1;
+}
+
+.preview-main::after,
+.preview-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), transparent 55%);
+  mix-blend-mode: screen;
+}
+
+.preview-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 0.8rem;
+}
+
+.preview-thumb {
+  height: 90px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.55rem;
+  color: rgba(255, 255, 255, 0.75);
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-thumb span {
+  position: relative;
+  z-index: 1;
+}
+
 .product-image span {
   z-index: 1;
 }
@@ -744,6 +800,11 @@ input:focus-visible {
 .page.theme-light .payment-grid input {
   background: rgba(18, 21, 38, 0.06);
   border-color: rgba(18, 21, 38, 0.18);
+}
+
+.page.theme-light .preview-main,
+.page.theme-light .preview-thumb {
+  color: rgba(18, 21, 38, 0.75);
 }
 
 .story {
