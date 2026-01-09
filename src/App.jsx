@@ -111,6 +111,10 @@ function App() {
   const [selectedSize, setSelectedSize] = useState('M')
   const [cartItems, setCartItems] = useState([])
   const [cartNotice, setCartNotice] = useState('')
+  const cartTotal = cartItems.reduce((sum, item) => {
+    const value = Number(item.price.replace(/[^0-9.]/g, ''))
+    return sum + value
+  }, 0)
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRoute())
@@ -140,8 +144,14 @@ function App() {
   }
 
   const handleAddToCart = (product) => {
-    setCartItems((items) => [...items, product])
-    setCartNotice(`Añadido: ${product.name}`)
+    setCartItems((items) => [
+      ...items,
+      {
+        ...product,
+        size: selectedSize,
+      },
+    ])
+    setCartNotice(`Añadido: ${product.name} · ${selectedSize}`)
     window.setTimeout(() => setCartNotice(''), 1800)
   }
 
@@ -324,6 +334,7 @@ function App() {
                   {cartItems.map((item, index) => (
                     <div className="cart-item" key={`${item.id}-${index}`}>
                       <span>{item.name}</span>
+                      <span className="cart-size">{item.size}</span>
                       <span>{item.price}</span>
                       <button
                         className="cart-remove glass"
@@ -337,6 +348,10 @@ function App() {
                   <a className="hero-cta glass" href="#/pago">
                     Pagar
                   </a>
+                  <div className="cart-total">
+                    <span>Total</span>
+                    <span>${cartTotal.toFixed(2)}</span>
+                  </div>
                 </div>
               )}
             </section>
@@ -363,7 +378,12 @@ function App() {
           {route === '/login' && (
             <section className="auth">
               <div className="auth-card">
-                <div className="auth-avatar">👤</div>
+                <div className="auth-avatar">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
+                  </svg>
+                </div>
                 <h3>Acceso privado</h3>
                 <p>Ingresa para administrar tu experiencia.</p>
                 <div className="payment-grid">
@@ -408,32 +428,44 @@ function App() {
           )}
 
           {route === '/sobre' && (
-            <section className="about-grid">
-              <div className="about-card glass">
-                <div className="image-panel image-vanta">
-                  <span>Imagen IA</span>
-                </div>
-                <h3>Atelier preciso</h3>
-                <p>
-                  Construcción impecable para siluetas que se mueven con
-                  intención.
-                </p>
-              </div>
-              <div className="about-card glass">
-                <div className="image-panel image-mirror">
-                  <span>Imagen IA</span>
-                </div>
-                <h3>Materiales hipnóticos</h3>
-                <p>
-                  Texturas con brillo controlado y acabados dignos de pasarela.
-                </p>
-              </div>
-              <div className="about-card glass">
+            <section className="about-layout">
+              <div className="about-hero glass">
                 <div className="image-panel image-aurora">
                   <span>Imagen IA</span>
                 </div>
-                <h3>Experiencia privada</h3>
-                <p>Concierge de estilo y fittings en espacios reservados.</p>
+                <h3>Laboratorio ICONS</h3>
+                <p>
+                  Siluetas nocturnas creadas con precisión, enfoque editorial y
+                  acabados de atelier.
+                </p>
+              </div>
+              <div className="about-grid">
+                <div className="about-card glass">
+                  <div className="image-panel image-vanta">
+                    <span>Imagen IA</span>
+                  </div>
+                  <h3>Atelier preciso</h3>
+                  <p>
+                    Construcción impecable para siluetas que se mueven con
+                    intención.
+                  </p>
+                </div>
+                <div className="about-card glass">
+                  <div className="image-panel image-mirror">
+                    <span>Imagen IA</span>
+                  </div>
+                  <h3>Materiales hipnóticos</h3>
+                  <p>
+                    Texturas con brillo controlado y acabados dignos de pasarela.
+                  </p>
+                </div>
+                <div className="about-card glass">
+                  <div className="image-panel image-orbit">
+                    <span>Imagen IA</span>
+                  </div>
+                  <h3>Experiencia privada</h3>
+                  <p>Concierge de estilo y fittings en espacios reservados.</p>
+                </div>
               </div>
             </section>
           )}
@@ -484,10 +516,16 @@ function App() {
             <h3>Social</h3>
             <div className="social-icons">
               <a href="https://instagram.com" aria-label="Instagram">
-                <span>◉</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="4" y="4" width="16" height="16" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17" cy="7" r="1.2" />
+                </svg>
               </a>
               <a href="https://twitter.com" aria-label="X">
-                <span>◎</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 4l6.5 8.1L6 20h3.3l4.6-5.7L18 20h3l-6.7-8.3L20 4h-3.2l-4.1 5.2L8.9 4H6z" />
+                </svg>
               </a>
             </div>
           </div>

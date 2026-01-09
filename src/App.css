@@ -11,11 +11,11 @@
 .page::before {
   content: '';
   position: fixed;
-  inset: -30%;
+  inset: -40%;
   background: conic-gradient(from 120deg, #050505, #141420, #07070c, #050505);
   background-size: 220% 220%;
   opacity: 0.9;
-  animation: ambient-shift 24s ease-in-out infinite;
+  animation: ambient-shift 26s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -33,13 +33,13 @@
 
 @keyframes ambient-shift {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg) scale(1);
   }
   50% {
-    transform: rotate(180deg);
+    transform: rotate(180deg) scale(1.05);
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(360deg) scale(1);
   }
 }
 
@@ -101,6 +101,7 @@ input:focus-visible {
   -webkit-backdrop-filter: blur(18px) saturate(170%);
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .glass::after {
@@ -208,7 +209,7 @@ input:focus-visible {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
-  transition: opacity 0.2s ease, transform 0.25s ease;
+  transition: opacity 0.2s ease, transform 0.3s ease;
   z-index: 10;
 }
 
@@ -228,6 +229,16 @@ input:focus-visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
+  animation: menu-pop 0.3s ease;
+}
+
+@keyframes menu-pop {
+  0% {
+    transform: translateY(-6px) scale(0.98);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 .hero {
@@ -254,10 +265,12 @@ input:focus-visible {
   0% {
     opacity: 0;
     letter-spacing: 1.8rem;
+    transform: translateY(12px);
   }
   100% {
     opacity: 1;
     letter-spacing: 1rem;
+    transform: translateY(0);
   }
 }
 
@@ -519,14 +532,31 @@ input:focus-visible {
 }
 
 .cart-remove {
-  padding: 0.35rem 0.8rem;
-  font-size: 0.55rem;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
   background: transparent;
   cursor: pointer;
-  opacity: 0.7;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  opacity: 0.55;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-size {
+  font-size: 0.6rem;
+  opacity: 0.6;
+  letter-spacing: 0.2rem;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.7rem;
+  opacity: 0.85;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 0.8rem;
 }
 
 .cart-toast {
@@ -581,9 +611,16 @@ input:focus-visible {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 1.4rem;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-avatar svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6px;
 }
 
 .payment-grid {
@@ -641,6 +678,18 @@ input:focus-visible {
   font-size: 0.65rem;
   color: inherit;
   text-decoration: none;
+}
+
+.about-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+.about-hero {
+  padding: 2rem;
+  border-radius: 26px;
+  display: grid;
+  gap: 1.4rem;
 }
 
 .about-grid {
@@ -764,6 +813,14 @@ input:focus-visible {
   color: inherit;
 }
 
+.social-icons svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6px;
+}
+
 .footer-note {
   text-align: center;
   opacity: 0.6;
@@ -791,6 +848,10 @@ input:focus-visible {
 
   .hero-title {
     letter-spacing: 0.5rem;
+  }
+
+  .about-hero {
+    padding: 1.6rem;
   }
 
   .section-head {
