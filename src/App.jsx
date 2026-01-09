@@ -66,7 +66,6 @@ function App() {
         <a className="brand" href="#/">
           ICONS
         </a>
-
         <button
           className="nav-toggle glass"
           type="button"
@@ -77,8 +76,7 @@ function App() {
           Menú
           <span className="nav-toggle-icon" aria-hidden="true" />
         </button>
-
-        <div className={`nav-menu ${menuOpen ? 'is-open' : ''}`} id="menu">
+        <div className={`nav-menu glass ${menuOpen ? 'is-open' : ''}`} id="menu">
           {navItems.map((item) => (
             <a key={item.path} href={`#${item.path}`}>
               {item.label}
@@ -224,7 +222,6 @@ function App() {
               </li>
             </ul>
           </div>
-
           <div className="footer-column">
             <h3>Compañía</h3>
             <ul>
@@ -239,7 +236,6 @@ function App() {
               </li>
             </ul>
           </div>
-
           <div className="footer-column">
             <h3>Social</h3>
             <div className="social-icons">
@@ -252,7 +248,6 @@ function App() {
             </div>
           </div>
         </div>
-
         <p className="footer-note">© 2024 ICONS. Todos los derechos reservados.</p>
       </footer>
     </div>
