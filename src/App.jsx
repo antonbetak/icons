@@ -472,9 +472,9 @@ function App() {
 
           {route === '/contacto' && (
             <section className="contact-card">
-              <p>icons@atelier.com</p>
-              <p>+1 (212) 555-0192</p>
-              <a className="hero-cta glass" href="mailto:icons@atelier.com">
+              <p>icons@gmail.com</p>
+              <p>+52 2224338512</p>
+              <a className="hero-cta glass" href="mailto:icons@gmail.com">
                 Agendar cita
               </a>
             </section>
