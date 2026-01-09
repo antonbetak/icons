@@ -110,6 +110,7 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [selectedSize, setSelectedSize] = useState('M')
   const [cartItems, setCartItems] = useState([])
+  const [cartNotice, setCartNotice] = useState('')
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRoute())
@@ -140,6 +141,8 @@ function App() {
 
   const handleAddToCart = (product) => {
     setCartItems((items) => [...items, product])
+    setCartNotice(`Añadido: ${product.name}`)
+    window.setTimeout(() => setCartNotice(''), 1800)
   }
 
   const handleRemoveFromCart = (indexToRemove) => {
@@ -310,6 +313,8 @@ function App() {
             </section>
           )}
 
+          {cartNotice && <div className="cart-toast">{cartNotice}</div>}
+
           {route === '/carrito' && (
             <section className="cart">
               {cartItems.length === 0 ? (
@@ -385,10 +390,19 @@ function App() {
                 </a>
               </div>
               <div className="story-card">
+                <div className="image-panel image-aurora">
+                  <span>Imagen IA</span>
+                </div>
                 <p>Capsulas estacionales • Edición limitada • Estilo nocturno</p>
                 <a className="ghost-button glass" href="#/contacto">
                   Asesoría privada
                 </a>
+              </div>
+              <div className="story-card">
+                <div className="image-panel image-orbit">
+                  <span>Imagen IA</span>
+                </div>
+                <p>Guías visuales para cada temporada.</p>
               </div>
             </section>
           )}
@@ -396,6 +410,9 @@ function App() {
           {route === '/sobre' && (
             <section className="about-grid">
               <div className="about-card glass">
+                <div className="image-panel image-vanta">
+                  <span>Imagen IA</span>
+                </div>
                 <h3>Atelier preciso</h3>
                 <p>
                   Construcción impecable para siluetas que se mueven con
@@ -403,12 +420,18 @@ function App() {
                 </p>
               </div>
               <div className="about-card glass">
+                <div className="image-panel image-mirror">
+                  <span>Imagen IA</span>
+                </div>
                 <h3>Materiales hipnóticos</h3>
                 <p>
                   Texturas con brillo controlado y acabados dignos de pasarela.
                 </p>
               </div>
               <div className="about-card glass">
+                <div className="image-panel image-aurora">
+                  <span>Imagen IA</span>
+                </div>
                 <h3>Experiencia privada</h3>
                 <p>Concierge de estilo y fittings en espacios reservados.</p>
               </div>

@@ -11,11 +11,11 @@
 .page::before {
   content: '';
   position: fixed;
-  inset: 0;
-  background: linear-gradient(120deg, #050505, #121218, #08080d, #050505);
-  background-size: 300% 300%;
+  inset: -30%;
+  background: conic-gradient(from 120deg, #050505, #141420, #07070c, #050505);
+  background-size: 220% 220%;
   opacity: 0.9;
-  animation: ambient-shift 20s ease-in-out infinite;
+  animation: ambient-shift 24s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -23,23 +23,23 @@
 .page::after {
   content: '';
   position: fixed;
-  inset: -30%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 45%),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.06), transparent 40%);
-  animation: ambient-float 22s ease-in-out infinite;
+  inset: -50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05), transparent 40%);
+  animation: ambient-float 28s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
 
 @keyframes ambient-shift {
   0% {
-    background-position: 0% 50%;
+    transform: rotate(0deg);
   }
   50% {
-    background-position: 100% 50%;
+    transform: rotate(180deg);
   }
   100% {
-    background-position: 0% 50%;
+    transform: rotate(360deg);
   }
 }
 
@@ -48,7 +48,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-16px);
+    transform: translateY(-18px);
   }
   100% {
     transform: translateY(0);
@@ -208,7 +208,7 @@ input:focus-visible {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.25s ease;
   z-index: 10;
 }
 
@@ -227,7 +227,7 @@ input:focus-visible {
 .nav-menu.is-open {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .hero {
@@ -246,9 +246,24 @@ input:focus-visible {
   z-index: 1;
 }
 
+.hero-title {
+  animation: hero-reveal 1.2s ease-out both;
+}
+
+@keyframes hero-reveal {
+  0% {
+    opacity: 0;
+    letter-spacing: 1.8rem;
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: 1rem;
+  }
+}
+
 .page-home .footer {
   margin-top: auto;
-  padding-top: 14rem;
+  padding-top: 20rem;
 }
 
 .hero-title {
@@ -504,12 +519,47 @@ input:focus-visible {
 }
 
 .cart-remove {
-  padding: 0.35rem 0.9rem;
-  font-size: 0.6rem;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.15rem;
   background: transparent;
   cursor: pointer;
+  opacity: 0.7;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.cart-toast {
+  position: sticky;
+  bottom: 2rem;
+  margin: 2rem auto 0;
+  width: fit-content;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 10, 12, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.6rem;
+  color: inherit;
+  animation: toast-pop 1.8s ease-out;
+}
+
+@keyframes toast-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .payment-card,
@@ -576,6 +626,8 @@ input:focus-visible {
   padding: 2rem;
   background: rgba(9, 9, 9, 0.75);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 1.2rem;
 }
 
 .ghost-button {
@@ -601,6 +653,8 @@ input:focus-visible {
 .about-card {
   padding: 1.8rem;
   border-radius: 20px;
+  display: grid;
+  gap: 1.2rem;
 }
 
 .about-card h3 {
@@ -625,6 +679,32 @@ input:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(9, 9, 9, 0.7);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.image-panel {
+  height: 160px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.image-panel span {
+  position: relative;
+  z-index: 1;
+}
+
+.image-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), transparent 55%);
+  mix-blend-mode: screen;
 }
 
 .footer {
