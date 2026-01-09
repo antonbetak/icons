@@ -7,10 +7,9 @@ function App() {
         <div className="brand">ICONS</div>
         <nav className="nav-links">
           <a href="#shop">SHOP</a>
-<<<<<<< ours
-=======
+
           <div className="nav-dropdown">
-            <button className="nav-trigger" type="button">
+            <button className="nav-trigger" type="button" aria-haspopup="true">
               COLLECTIONS
             </button>
             <div className="nav-menu">
@@ -19,36 +18,25 @@ function App() {
               <a href="#journal">JOURNAL</a>
             </div>
           </div>
->>>>>>> theirs
+
           <a href="#about">ABOUT</a>
           <a href="#contact">CONTACT</a>
         </nav>
+
         <div className="nav-actions">
-<<<<<<< ours
-          <button className="icon-button" type="button" aria-label="Search">
-=======
           <a className="icon-button" href="#shop" aria-label="Search">
->>>>>>> theirs
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="M20 20l-3.5-3.5" />
             </svg>
-<<<<<<< ours
-          </button>
-          <button className="icon-button" type="button" aria-label="Cart">
-=======
           </a>
+
           <a className="icon-button" href="#contact" aria-label="Cart">
->>>>>>> theirs
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 7h12l-1.4 10H7.4L6 7z" />
               <path d="M9 7V6a3 3 0 0 1 6 0v1" />
             </svg>
-<<<<<<< ours
-          </button>
-=======
           </a>
->>>>>>> theirs
         </div>
       </header>
 
@@ -58,13 +46,6 @@ function App() {
         <p className="hero-subtitle">
           Crafted essentials that move with you, wherever the night takes you.
         </p>
-<<<<<<< ours
-        <button className="hero-cta" type="button">
-          SHOP NOW
-        </button>
-      </main>
-
-=======
         <a className="hero-cta" href="#shop">
           SHOP NOW
         </a>
@@ -91,6 +72,7 @@ function App() {
               </div>
             </div>
           </article>
+
           <article className="product-card" id="product-vanta">
             <div className="product-image image-vanta" />
             <div className="product-body">
@@ -106,6 +88,7 @@ function App() {
               </div>
             </div>
           </article>
+
           <article className="product-card" id="product-orbit">
             <div className="product-image image-orbit" />
             <div className="product-body">
@@ -121,6 +104,7 @@ function App() {
               </div>
             </div>
           </article>
+
           <article className="product-card" id="product-mirror">
             <div className="product-image image-mirror" />
             <div className="product-body">
@@ -218,7 +202,6 @@ function App() {
         </div>
       </section>
 
->>>>>>> theirs
       <footer className="footer">
         <div className="footer-columns">
           <div className="footer-column">
@@ -235,6 +218,7 @@ function App() {
               </li>
             </ul>
           </div>
+
           <div className="footer-column">
             <h3>COMPANY</h3>
             <ul>
@@ -249,6 +233,7 @@ function App() {
               </li>
             </ul>
           </div>
+
           <div className="footer-column">
             <h3>FOLLOW US</h3>
             <div className="social-icons">
@@ -261,6 +246,7 @@ function App() {
             </div>
           </div>
         </div>
+
         <p className="footer-note">© 2024 ICONS. All rights reserved.</p>
       </footer>
     </div>
