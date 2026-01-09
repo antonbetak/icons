@@ -107,6 +107,12 @@ const getRoute = () => {
 function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'dark'
+    const stored = window.localStorage.getItem('theme')
+    if (stored) return stored
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  })
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [selectedSize, setSelectedSize] = useState('M')
   const [cartItems, setCartItems] = useState([])
@@ -125,6 +131,12 @@ function App() {
   useEffect(() => {
     setMenuOpen(false)
   }, [route])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('theme', theme)
+    }
+  }, [theme])
 
   const navItems = useMemo(
     () =>
@@ -160,7 +172,7 @@ function App() {
   }
 
   return (
-    <div className={`page ${route === '/' ? 'page-home' : ''}`}>
+    <div className={`page ${route === '/' ? 'page-home' : ''} ${theme === 'light' ? 'theme-light' : ''}`}>
       <header className="top-nav">
         <a className="brand" href="#/">
           ICONS
@@ -185,6 +197,23 @@ function App() {
               ))}
             </div>
           </div>
+          <button
+            className="nav-icon glass theme-toggle"
+            type="button"
+            onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+            aria-label={`Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`}
+          >
+            {theme === 'dark' ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1l2.1-2.1M17 7l2.1-2.1" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" />
+              </svg>
+            )}
+          </button>
           <a className="nav-icon glass" href="#/login" aria-label="Log in">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="8" r="4" />
