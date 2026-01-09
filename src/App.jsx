@@ -142,6 +142,10 @@ function App() {
     setCartItems((items) => [...items, product])
   }
 
+  const handleRemoveFromCart = (indexToRemove) => {
+    setCartItems((items) => items.filter((_, index) => index !== indexToRemove))
+  }
+
   return (
     <div className={`page ${route === '/' ? 'page-home' : ''}`}>
       <header className="top-nav">
@@ -169,10 +173,16 @@ function App() {
             </div>
           </div>
           <a className="nav-icon glass" href="#/login" aria-label="Log in">
-            👤
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
+            </svg>
           </a>
           <a className="nav-icon glass" href="#/carrito" aria-label="Carrito">
-            🛒
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 7h12l-1.4 10H7.4L6 7z" />
+              <path d="M9 7V6a3 3 0 0 1 6 0v1" />
+            </svg>
             {cartItems.length > 0 && (
               <span className="cart-count">{cartItems.length}</span>
             )}
@@ -310,6 +320,13 @@ function App() {
                     <div className="cart-item" key={`${item.id}-${index}`}>
                       <span>{item.name}</span>
                       <span>{item.price}</span>
+                      <button
+                        className="cart-remove glass"
+                        type="button"
+                        onClick={() => handleRemoveFromCart(index)}
+                      >
+                        Quitar
+                      </button>
                     </div>
                   ))}
                   <a className="hero-cta glass" href="#/pago">
