@@ -11,11 +11,27 @@ const products = [
     category: 'gorras',
   },
   {
+    id: 'gorra-lux',
+    name: 'Gorra Lux',
+    desc: 'Tejido compacto con brillo controlado.',
+    price: '$135',
+    tone: 'image-vanta',
+    category: 'gorras',
+  },
+  {
     id: 'gorra-nocturna',
     name: 'Gorra Nocturna',
     desc: 'Lona premium con brillo sutil en costuras.',
     price: '$145',
     tone: 'image-orbit',
+    category: 'gorras',
+  },
+  {
+    id: 'gorra-aurora',
+    name: 'Gorra Aurora',
+    desc: 'Paneles suaves con textura de luz tenue.',
+    price: '$150',
+    tone: 'image-mirror',
     category: 'gorras',
   },
   {
@@ -27,11 +43,27 @@ const products = [
     category: 'playeras',
   },
   {
+    id: 'playera-noir',
+    name: 'Playera Noir',
+    desc: 'Algodón italiano con acabado mate.',
+    price: '$195',
+    tone: 'image-aurora',
+    category: 'playeras',
+  },
+  {
     id: 'playera-orbita',
     name: 'Playera Órbita',
     desc: 'Tejido suave con destellos micro metálicos.',
     price: '$210',
     tone: 'image-mirror',
+    category: 'playeras',
+  },
+  {
+    id: 'playera-eclipse',
+    name: 'Playera Eclipse',
+    desc: 'Fibra premium con textura hipnótica.',
+    price: '$220',
+    tone: 'image-orbit',
     category: 'playeras',
   },
 ]
@@ -76,6 +108,7 @@ function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(products[0])
+  const [selectedSize, setSelectedSize] = useState('M')
   const [cartItems, setCartItems] = useState([])
 
   useEffect(() => {
@@ -101,6 +134,7 @@ function App() {
 
   const handleSelectProduct = (product) => {
     setSelectedProduct(product)
+    setSelectedSize('M')
     window.location.hash = '#/tallas'
   }
 
@@ -109,35 +143,40 @@ function App() {
   }
 
   return (
-    <div className="page">
-      <header className="top-nav glass">
+    <div className={`page ${route === '/' ? 'page-home' : ''}`}>
+      <header className="top-nav">
         <a className="brand" href="#/">
           ICONS
         </a>
         <div className="nav-actions">
-          <button
-            className="nav-toggle glass"
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="menu"
-          >
-            Menú
-            <span className="nav-toggle-icon" aria-hidden="true" />
-          </button>
-          <a className="nav-link glass" href="#/login">
-            Log in
+          <div className="nav-menu-wrap">
+            <button
+              className="nav-toggle glass"
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-controls="menu"
+            >
+              Menú
+              <span className="nav-toggle-icon" aria-hidden="true" />
+            </button>
+            <div className={`nav-menu glass ${menuOpen ? 'is-open' : ''}`} id="menu">
+              {navItems.map((item) => (
+                <a key={item.path} href={`#${item.path}`}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+          <a className="nav-icon glass" href="#/login" aria-label="Log in">
+            👤
           </a>
-          <a className="nav-link glass" href="#/carrito">
-            Carrito ({cartItems.length})
+          <a className="nav-icon glass" href="#/carrito" aria-label="Carrito">
+            🛒
+            {cartItems.length > 0 && (
+              <span className="cart-count">{cartItems.length}</span>
+            )}
           </a>
-        </div>
-        <div className={`nav-menu glass ${menuOpen ? 'is-open' : ''}`} id="menu">
-          {navItems.map((item) => (
-            <a key={item.path} href={`#${item.path}`}>
-              {item.label}
-            </a>
-          ))}
         </div>
       </header>
 
@@ -233,11 +272,17 @@ function App() {
                   <p className="preview-price">{selectedProduct.price}</p>
                   <div className="size-grid">
                     {sizes.map((size) => (
-                      <button className="size-pill glass" type="button" key={size}>
+                      <button
+                        className={`size-pill glass ${selectedSize === size ? 'is-selected' : ''}`}
+                        type="button"
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                      >
                         {size}
                       </button>
                     ))}
                   </div>
+                  <p className="size-note">Talla seleccionada: {selectedSize}</p>
                   <div className="preview-actions">
                     <button
                       className="hero-cta glass"
@@ -296,7 +341,8 @@ function App() {
           {route === '/login' && (
             <section className="auth">
               <div className="auth-card">
-                <h3>Acceso</h3>
+                <div className="auth-avatar">👤</div>
+                <h3>Acceso privado</h3>
                 <p>Ingresa para administrar tu experiencia.</p>
                 <div className="payment-grid">
                   <input type="email" placeholder="Correo" />
@@ -332,20 +378,20 @@ function App() {
 
           {route === '/sobre' && (
             <section className="about-grid">
-              <div>
+              <div className="about-card glass">
                 <h3>Atelier preciso</h3>
                 <p>
                   Construcción impecable para siluetas que se mueven con
                   intención.
                 </p>
               </div>
-              <div>
+              <div className="about-card glass">
                 <h3>Materiales hipnóticos</h3>
                 <p>
                   Texturas con brillo controlado y acabados dignos de pasarela.
                 </p>
               </div>
-              <div>
+              <div className="about-card glass">
                 <h3>Experiencia privada</h3>
                 <p>Concierge de estilo y fittings en espacios reservados.</p>
               </div>
