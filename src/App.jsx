@@ -108,16 +108,14 @@ const getRoute = () => {
 function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
-  const [themeMode, setThemeMode] = useState(() => {
-    if (typeof window === 'undefined') return 'system'
-    return window.localStorage.getItem('theme') ?? 'system'
-  })
+  const [themeMode, setThemeMode] = useState('system')
   const [systemTheme, setSystemTheme] = useState(() => {
     if (typeof window === 'undefined') return 'dark'
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
   })
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [selectedSize, setSelectedSize] = useState('M')
+  const [selectedAngle, setSelectedAngle] = useState('A')
   const [cartItems, setCartItems] = useState([])
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
@@ -167,6 +165,7 @@ function App() {
     } else {
       setSelectedSize('M')
     }
+    setSelectedAngle('A')
     window.location.hash = '#/tallas'
   }
 
@@ -286,7 +285,18 @@ function App() {
                   {products
                     .filter((product) => product.category === 'gorras')
                     .map((item) => (
-                      <article className="product-card" key={item.id}>
+                      <article
+                        className="product-card"
+                        key={item.id}
+                        onClick={() => handleSelectProduct(item)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleSelectProduct(item)
+                          }
+                        }}
+                      >
                         <div className={`product-image ${item.tone}`}>
                           <span>Imagen IA</span>
                         </div>
@@ -300,7 +310,10 @@ function App() {
                             <button
                               className="product-action glass"
                               type="button"
-                              onClick={() => handleSelectProduct(item)}
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleSelectProduct(item)
+                              }}
                             >
                               Comprar
                             </button>
@@ -317,7 +330,18 @@ function App() {
                   {products
                     .filter((product) => product.category === 'playeras')
                     .map((item) => (
-                      <article className="product-card" key={item.id}>
+                      <article
+                        className="product-card"
+                        key={item.id}
+                        onClick={() => handleSelectProduct(item)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleSelectProduct(item)
+                          }
+                        }}
+                      >
                         <div className={`product-image ${item.tone}`}>
                           <span>Imagen IA</span>
                         </div>
@@ -331,7 +355,10 @@ function App() {
                             <button
                               className="product-action glass"
                               type="button"
-                              onClick={() => handleSelectProduct(item)}
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleSelectProduct(item)
+                              }}
                             >
                               Comprar
                             </button>
@@ -349,13 +376,20 @@ function App() {
               <div className="preview-card">
                 <div className="preview-media">
                   <div className={`preview-main ${selectedProduct.tone}`}>
-                    <span>Vista previa IA</span>
+                    <span>Ángulo {selectedAngle}</span>
                   </div>
                   <div className="preview-thumbs">
                     {['A', 'B', 'C'].map((label) => (
-                      <div className={`preview-thumb ${selectedProduct.tone}`} key={label}>
+                      <button
+                        className={`preview-thumb ${selectedProduct.tone} ${
+                          selectedAngle === label ? 'is-selected' : ''
+                        }`}
+                        key={label}
+                        type="button"
+                        onClick={() => setSelectedAngle(label)}
+                      >
                         <span>Ángulo {label}</span>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>

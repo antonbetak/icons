@@ -537,11 +537,24 @@ input:focus-visible {
   color: rgba(255, 255, 255, 0.75);
   position: relative;
   overflow: hidden;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
 }
 
 .preview-thumb span {
   position: relative;
   z-index: 1;
+}
+
+.preview-thumb.is-selected {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.page.theme-light .preview-thumb.is-selected {
+  border-color: rgba(18, 21, 38, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(18, 21, 38, 0.3);
 }
 
 .product-image span {
