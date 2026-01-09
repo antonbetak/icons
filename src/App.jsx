@@ -107,10 +107,12 @@ const getRoute = () => {
 function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
-  const [theme, setTheme] = useState(() => {
+  const [themeMode, setThemeMode] = useState(() => {
+    if (typeof window === 'undefined') return 'system'
+    return window.localStorage.getItem('theme') ?? 'system'
+  })
+  const [systemTheme, setSystemTheme] = useState(() => {
     if (typeof window === 'undefined') return 'dark'
-    const stored = window.localStorage.getItem('theme')
-    if (stored) return stored
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
   })
   const [selectedProduct, setSelectedProduct] = useState(products[0])
@@ -133,10 +135,18 @@ function App() {
   }, [route])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+    const media = window.matchMedia('(prefers-color-scheme: light)')
+    const handleChange = (event) => setSystemTheme(event.matches ? 'light' : 'dark')
+    media.addEventListener('change', handleChange)
+    return () => media.removeEventListener('change', handleChange)
+  }, [])
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem('theme', theme)
+      window.localStorage.setItem('theme', themeMode)
     }
-  }, [theme])
+  }, [themeMode])
 
   const navItems = useMemo(
     () =>
@@ -171,8 +181,12 @@ function App() {
     setCartItems((items) => items.filter((_, index) => index !== indexToRemove))
   }
 
+  const activeTheme = themeMode === 'system' ? systemTheme : themeMode
+
   return (
-    <div className={`page ${route === '/' ? 'page-home' : ''} ${theme === 'light' ? 'theme-light' : ''}`}>
+    <div
+      className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
+    >
       <header className="top-nav">
         <a className="brand" href="#/">
           ICONS
@@ -200,10 +214,12 @@ function App() {
           <button
             className="nav-icon glass theme-toggle"
             type="button"
-            onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
-            aria-label={`Cambiar a modo ${theme === 'dark' ? 'claro' : 'oscuro'}`}
+            onClick={() =>
+              setThemeMode((current) => (current === 'dark' ? 'light' : 'dark'))
+            }
+            aria-label={`Cambiar a modo ${activeTheme === 'dark' ? 'claro' : 'oscuro'}`}
           >
-            {theme === 'dark' ? (
+            {activeTheme === 'dark' ? (
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" />
                 <path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1l2.1-2.1M17 7l2.1-2.1" />
