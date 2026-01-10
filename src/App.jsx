@@ -116,6 +116,8 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [selectedSize, setSelectedSize] = useState('M')
   const [selectedAngle, setSelectedAngle] = useState('A')
+  const [galleryOpen, setGalleryOpen] = useState(false)
+  const [galleryIndex, setGalleryIndex] = useState(0)
   const [cartItems, setCartItems] = useState([])
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
@@ -166,6 +168,7 @@ function App() {
       setSelectedSize('M')
     }
     setSelectedAngle('A')
+    setGalleryOpen(false)
     window.location.hash = '#/tallas'
   }
 
@@ -187,12 +190,26 @@ function App() {
   }
 
   const activeTheme = themeMode === 'system' ? systemTheme : themeMode
+  const galleryLabels = ['A', 'B', 'C']
   const handleToggleTheme = () => {
     setThemeMode((current) => {
       if (current === 'system') return 'light'
       if (current === 'light') return 'dark'
       return 'system'
     })
+  }
+
+  const handleOpenGallery = (index) => {
+    setGalleryIndex(index)
+    setGalleryOpen(true)
+  }
+
+  const handleNextGallery = () => {
+    setGalleryIndex((current) => (current + 1) % galleryLabels.length)
+  }
+
+  const handlePrevGallery = () => {
+    setGalleryIndex((current) => (current - 1 + galleryLabels.length) % galleryLabels.length)
   }
 
   return (
@@ -266,6 +283,7 @@ function App() {
       {route === '/' ? (
         <main className="hero">
           <h1 className="hero-title">ICONS</h1>
+          {/* TODO: ajustar tipografía del título principal "ICONS" */}
           <a className="hero-cta glass" href="#/tienda">
             Comprar ahora
           </a>
@@ -375,18 +393,25 @@ function App() {
             <section className="preview">
               <div className="preview-card">
                 <div className="preview-media">
-                  <div className={`preview-main ${selectedProduct.tone}`}>
+                  <button
+                    className={`preview-main ${selectedProduct.tone}`}
+                    type="button"
+                    onClick={() => handleOpenGallery(0)}
+                  >
                     <span>Ángulo {selectedAngle}</span>
-                  </div>
+                  </button>
                   <div className="preview-thumbs">
-                    {['A', 'B', 'C'].map((label) => (
+                    {galleryLabels.map((label, index) => (
                       <button
                         className={`preview-thumb ${selectedProduct.tone} ${
                           selectedAngle === label ? 'is-selected' : ''
                         }`}
                         key={label}
                         type="button"
-                        onClick={() => setSelectedAngle(label)}
+                        onClick={() => {
+                          setSelectedAngle(label)
+                          handleOpenGallery(index)
+                        }}
                       >
                         <span>Ángulo {label}</span>
                       </button>
@@ -434,6 +459,57 @@ function App() {
           )}
 
           {cartNotice && <div className="cart-toast">{cartNotice}</div>}
+
+          {galleryOpen && (
+            <div className="gallery-overlay" role="dialog" aria-modal="true">
+              <div className="gallery-panel glass">
+                <button
+                  className="gallery-close glass"
+                  type="button"
+                  onClick={() => setGalleryOpen(false)}
+                  aria-label="Cerrar"
+                >
+                  ×
+                </button>
+                <button
+                  className="gallery-nav gallery-prev glass"
+                  type="button"
+                  onClick={handlePrevGallery}
+                  aria-label="Anterior"
+                >
+                  ‹
+                </button>
+                <div className={`gallery-stage ${selectedProduct.tone}`}>
+                  <span>{selectedProduct.name} · Ángulo {galleryLabels[galleryIndex]}</span>
+                </div>
+                <button
+                  className="gallery-nav gallery-next glass"
+                  type="button"
+                  onClick={handleNextGallery}
+                  aria-label="Siguiente"
+                >
+                  ›
+                </button>
+                <div className="gallery-dots">
+                  {galleryLabels.map((label, index) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`gallery-dot ${galleryIndex === index ? 'is-active' : ''}`}
+                      onClick={() => setGalleryIndex(index)}
+                      aria-label={`Ir al ángulo ${label}`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <button
+                className="gallery-backdrop"
+                type="button"
+                onClick={() => setGalleryOpen(false)}
+                aria-label="Cerrar galería"
+              />
+            </div>
+          )}
 
           {route === '/carrito' && (
             <section className="cart">

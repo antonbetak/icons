@@ -504,6 +504,9 @@ input:focus-visible {
   color: rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .preview-main span {
@@ -555,6 +558,130 @@ input:focus-visible {
 .page.theme-light .preview-thumb.is-selected {
   border-color: rgba(18, 21, 38, 0.45);
   box-shadow: inset 0 0 0 1px rgba(18, 21, 38, 0.3);
+}
+
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 20;
+}
+
+.gallery-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(6, 8, 18, 0.5);
+  cursor: pointer;
+}
+
+.page.theme-light .gallery-backdrop {
+  background: rgba(230, 235, 255, 0.6);
+}
+
+.gallery-panel {
+  position: relative;
+  width: min(860px, 92vw);
+  padding: 2.5rem 2rem 2.2rem;
+  border-radius: 28px;
+  z-index: 1;
+  display: grid;
+  gap: 1.6rem;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  animation: gallery-pop 0.35s ease;
+}
+
+.gallery-stage {
+  width: 100%;
+  height: min(420px, 60vh);
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-stage span {
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), transparent 55%);
+  mix-blend-mode: screen;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.4rem;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.gallery-prev {
+  left: 1.2rem;
+}
+
+.gallery-next {
+  right: 1.2rem;
+}
+
+.gallery-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+}
+
+.gallery-dot.is-active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes gallery-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .product-image span {
