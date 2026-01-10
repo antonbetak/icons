@@ -591,7 +591,6 @@ input:focus-visible {
   align-items: center;
   justify-items: center;
   text-align: center;
-  animation: gallery-pop 0.35s ease;
 }
 
 .gallery-stage {
@@ -632,6 +631,7 @@ input:focus-visible {
   font-size: 1.4rem;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 2;
 }
 
 .gallery-nav {
@@ -645,6 +645,7 @@ input:focus-visible {
   display: grid;
   place-items: center;
   cursor: pointer;
+  z-index: 2;
 }
 
 .gallery-prev {
@@ -673,16 +674,6 @@ input:focus-visible {
   background: rgba(255, 255, 255, 0.9);
 }
 
-@keyframes gallery-pop {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
 
 .product-image span {
   z-index: 1;
