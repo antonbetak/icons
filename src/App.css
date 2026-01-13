@@ -823,6 +823,7 @@ input:focus-visible {
   background: var(--surface-soft);
   box-shadow: 0 24px 50px var(--shadow-strong);
   animation: none;
+  transition: none;
 }
 
 .preview-price {
@@ -1324,6 +1325,9 @@ input:focus-visible {
   gap: 2rem;
   align-items: center;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: 0 20px 40px var(--shadow);
 }
 
 .about-grid {
@@ -1338,6 +1342,9 @@ input:focus-visible {
   border-radius: 20px;
   display: grid;
   gap: 1.2rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: 0 20px 40px var(--shadow);
 }
 
 .about-card.glass::after,
@@ -1349,6 +1356,17 @@ input:focus-visible {
   text-transform: uppercase;
   letter-spacing: 0.2rem;
   margin-bottom: 0.6rem;
+}
+
+.about-intro h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+  margin: 0 0 0.8rem;
+}
+
+.about-intro p {
+  margin: 0;
+  opacity: 0.7;
 }
 
 .about-card p {
