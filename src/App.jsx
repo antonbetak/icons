@@ -434,7 +434,7 @@ function App() {
           </header>
 
           {route === '/tienda' && (
-            <section className="shop">
+            <section className="shop section-reveal">
               <div className="shop-group">
                 <h3>Gorras</h3>
                 <div className="carousel">
@@ -528,7 +528,7 @@ function App() {
           )}
 
           {route === '/tallas' && selectedProduct && (
-            <section className="preview">
+            <section className="preview section-reveal">
               <div className="preview-card">
                 <div className="preview-media">
                   <button
@@ -650,7 +650,7 @@ function App() {
           )}
 
           {route === '/carrito' && (
-            <section className="cart">
+            <section className="cart section-reveal">
               {cartItems.length === 0 ? (
                 <p>Tu carrito está vacío.</p>
               ) : (
@@ -682,7 +682,7 @@ function App() {
           )}
 
           {route === '/pago' && (
-            <section className="payment">
+            <section className="payment section-reveal">
               <div className="payment-card">
                 {!userProfile ? (
                   <div className="payment-section">
@@ -847,7 +847,7 @@ function App() {
           )}
 
           {route === '/login' && (
-            <section className="auth">
+            <section className="auth section-reveal">
               <div className="auth-card">
                 <div className="auth-avatar">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -885,7 +885,7 @@ function App() {
           )}
 
           {route === '/configuracion' && (
-            <section className="account">
+            <section className="account section-reveal">
               <div className="account-card">
                 <h3>Configuración de usuario</h3>
                 <p>Administra tus datos predeterminados y perfil.</p>
@@ -907,11 +907,23 @@ function App() {
                         value={profileAvatar}
                         onChange={(event) => setProfileAvatar(event.target.value)}
                       />
-                      <input type="file" accept="image/*" onChange={handleAvatarFile} />
+                      <div className="account-upload">
+                        <label className="file-label glass" htmlFor="avatar-upload">
+                          Cargar desde galería
+                        </label>
+                        <input
+                          id="avatar-upload"
+                          className="file-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAvatarFile}
+                        />
+                      </div>
                       <button className="ghost-button glass" type="button" onClick={handleSaveAvatar}>
                         Guardar foto
                       </button>
                     </div>
+                    <p className="form-hint">Usa una URL o sube una imagen cuadrada.</p>
                   </div>
 
                   <div className="account-panel glass">
@@ -999,7 +1011,7 @@ function App() {
           )}
 
           {route === '/guia' && (
-            <section className="story">
+            <section className="story section-reveal">
               <div>
                 <h3>Combinaciones premium</h3>
                 <p>
@@ -1029,7 +1041,7 @@ function App() {
           )}
 
           {route === '/sobre' && (
-            <section className="about-layout">
+            <section className="about-layout section-reveal">
               <div className="about-hero glass">
                 <div className="image-panel image-aurora">
                   <span>Imagen IA</span>
@@ -1072,7 +1084,7 @@ function App() {
           )}
 
           {route === '/contacto' && (
-            <section className="contact-card">
+            <section className="contact-card section-reveal">
               <p>icons@gmail.com</p>
               <p>+52 2224338512</p>
               <a className="hero-cta glass" href="mailto:icons@gmail.com">
