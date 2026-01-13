@@ -770,6 +770,9 @@ function App() {
           {route === '/tallas' && selectedProduct && (
             <section className="preview">
               <div className="preview-card">
+                <button className="preview-back ghost-button glass" type="button" onClick={handleBackToCatalog}>
+                  Regresar a prendas
+                </button>
                 <div className="preview-media">
                   <button
                     className={`preview-main ${selectedProduct.tone}`}
