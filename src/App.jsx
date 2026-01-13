@@ -94,10 +94,31 @@ const pages = {
     title: 'Contacto',
     description: 'Agenda un fitting privado o consulta disponibilidad.',
   },
+  '/configuracion': {
+    label: 'Configuración',
+    title: 'Configuración',
+    description: 'Preferencias y datos guardados de tu cuenta.',
+  },
 }
 
 const sizes = ['S', 'M', 'L', 'XL', 'XXL']
 const hatFitLabel = 'Ajuste trasero'
+const demoUser = {
+  email: 'betakanton9@gmail.com',
+  password: '1234',
+  name: 'Beta Kantón',
+  avatar: '',
+  addresses: [
+    { id: 'addr-1', label: 'Casa · Calle Sierra 120, CDMX' },
+    { id: 'addr-2', label: 'Studio · Av. Reforma 87, CDMX' },
+  ],
+  cards: [
+    { id: 'card-1', label: 'Visa •••• 9021' },
+    { id: 'card-2', label: 'Mastercard •••• 4480' },
+  ],
+  defaultAddressId: 'addr-1',
+  defaultCardId: 'card-1',
+}
 
 const getRoute = () => {
   const hash = window.location.hash.replace('#', '')
@@ -119,8 +140,16 @@ function App() {
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [paymentStep, setPaymentStep] = useState(1)
-  const [addressOption, setAddressOption] = useState('predeterminada')
   const [shippingOption, setShippingOption] = useState('7')
+  const [selectedAddressId, setSelectedAddressId] = useState(null)
+  const [selectedCardId, setSelectedCardId] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
+  const [authEmail, setAuthEmail] = useState('')
+  const [authPassword, setAuthPassword] = useState('')
+  const [authError, setAuthError] = useState('')
+  const [profileAvatar, setProfileAvatar] = useState('')
+  const [newAddress, setNewAddress] = useState('')
+  const [newCard, setNewCard] = useState('')
   const [cartItems, setCartItems] = useState([])
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
@@ -151,6 +180,13 @@ function App() {
       window.localStorage.setItem('theme', themeMode)
     }
   }, [themeMode])
+
+  useEffect(() => {
+    if (!userProfile) return
+    setSelectedAddressId(userProfile.defaultAddressId ?? userProfile.addresses[0]?.id ?? null)
+    setSelectedCardId(userProfile.defaultCardId ?? userProfile.cards[0]?.id ?? null)
+    setProfileAvatar(userProfile.avatar ?? '')
+  }, [userProfile])
 
   const navItems = useMemo(
     () =>
@@ -223,12 +259,81 @@ function App() {
     setPaymentStep((step) => Math.max(step - 1, 1))
   }
 
+  const handleLogin = () => {
+    if (authEmail === demoUser.email && authPassword === demoUser.password) {
+      setUserProfile(demoUser)
+      setAuthError('')
+      window.location.hash = '#/configuracion'
+      return
+    }
+    setAuthError('Credenciales inválidas.')
+  }
+
+  const handleRegister = () => {
+    if (!authEmail || !authPassword) {
+      setAuthError('Completa correo y contraseña.')
+      return
+    }
+    setUserProfile({
+      email: authEmail,
+      password: authPassword,
+      name: 'Nuevo usuario',
+      avatar: '',
+      addresses: [],
+      cards: [],
+      defaultAddressId: null,
+      defaultCardId: null,
+    })
+    setAuthError('')
+    window.location.hash = '#/configuracion'
+  }
+
+  const handleAddAddress = () => {
+    if (!newAddress.trim()) return
+    const next = {
+      id: `addr-${Date.now()}`,
+      label: newAddress.trim(),
+    }
+    setUserProfile((profile) => {
+      if (!profile) return profile
+      const addresses = [...profile.addresses, next]
+      return {
+        ...profile,
+        addresses,
+        defaultAddressId: profile.defaultAddressId ?? next.id,
+      }
+    })
+    setNewAddress('')
+  }
+
+  const handleAddCard = () => {
+    if (!newCard.trim()) return
+    const next = {
+      id: `card-${Date.now()}`,
+      label: newCard.trim(),
+    }
+    setUserProfile((profile) => {
+      if (!profile) return profile
+      const cards = [...profile.cards, next]
+      return {
+        ...profile,
+        cards,
+        defaultCardId: profile.defaultCardId ?? next.id,
+      }
+    })
+    setNewCard('')
+  }
+
+  const handleSaveAvatar = () => {
+    setUserProfile((profile) => (profile ? { ...profile, avatar: profileAvatar } : profile))
+  }
+
   return (
     <div
       className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
     >
       <header className="top-nav">
-        <a className="brand font-gothic" href="#/">
+        <a className="brand" href="#/">
           ICONS
         </a>
         <div className="nav-actions">
@@ -251,28 +356,6 @@ function App() {
               ))}
             </div>
           </div>
-          <button
-            className="nav-icon glass theme-toggle"
-            type="button"
-            onClick={handleToggleTheme}
-            aria-label={`Tema: ${themeMode === 'system' ? 'sistema' : themeMode}`}
-          >
-            {themeMode === 'system' ? (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="5" width="18" height="12" rx="2" />
-                <path d="M8 19h8" />
-              </svg>
-            ) : activeTheme === 'dark' ? (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1l2.1-2.1M17 7l2.1-2.1" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" />
-              </svg>
-            )}
-          </button>
           <a className="nav-icon glass" href="#/login" aria-label="Log in">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="8" r="4" />
@@ -557,106 +640,164 @@ function App() {
           {route === '/pago' && (
             <section className="payment">
               <div className="payment-card">
-                <div className="payment-steps">
-                  <span className={paymentStep >= 1 ? 'is-active' : ''}>Dirección</span>
-                  <span className={paymentStep >= 2 ? 'is-active' : ''}>Entrega</span>
-                  <span className={paymentStep >= 3 ? 'is-active' : ''}>Pago</span>
-                </div>
-
-                {paymentStep === 1 && (
+                {!userProfile ? (
                   <div className="payment-section">
-                    <h3>Dirección de entrega</h3>
-                    <p>Elige una dirección predeterminada o agrega una nueva.</p>
-                    <div className="payment-options">
-                      <button
-                        className={`ghost-button glass ${
-                          addressOption === 'predeterminada' ? 'is-selected' : ''
-                        }`}
-                        type="button"
-                        onClick={() => setAddressOption('predeterminada')}
-                      >
-                        Predeterminada
+                    <h3>Inicia sesión o regístrate</h3>
+                    <p>Accede para cargar tus datos predeterminados.</p>
+                    <div className="payment-grid">
+                      <input
+                        type="email"
+                        placeholder="Correo"
+                        value={authEmail}
+                        onChange={(event) => setAuthEmail(event.target.value)}
+                      />
+                      <input
+                        type="password"
+                        placeholder="Contraseña"
+                        value={authPassword}
+                        onChange={(event) => setAuthPassword(event.target.value)}
+                      />
+                    </div>
+                    {authError && <p className="form-error">{authError}</p>}
+                    <div className="payment-actions">
+                      <button className="ghost-button glass" type="button" onClick={handleRegister}>
+                        Registrarme
                       </button>
-                      <button
-                        className={`ghost-button glass ${
-                          addressOption === 'nueva' ? 'is-selected' : ''
-                        }`}
-                        type="button"
-                        onClick={() => setAddressOption('nueva')}
-                      >
-                        Nueva dirección
+                      <button className="hero-cta glass" type="button" onClick={handleLogin}>
+                        Ingresar
                       </button>
                     </div>
-                    {addressOption === 'nueva' && (
-                      <div className="payment-grid">
-                        <input type="text" placeholder="Nombre completo" />
-                        <input type="text" placeholder="Calle y número" />
-                        <input type="text" placeholder="Ciudad" />
-                        <input type="text" placeholder="Código postal" />
+                  </div>
+                ) : (
+                  <>
+                    <div className="payment-steps">
+                      <span className={paymentStep >= 1 ? 'is-active' : ''}>Dirección</span>
+                      <span className={paymentStep >= 2 ? 'is-active' : ''}>Entrega</span>
+                      <span className={paymentStep >= 3 ? 'is-active' : ''}>Pago</span>
+                    </div>
+
+                    {paymentStep === 1 && (
+                      <div className="payment-section">
+                        <h3>Dirección de entrega</h3>
+                        <p>Elige una dirección guardada o agrega una nueva.</p>
+                        {userProfile.addresses.length > 0 ? (
+                          <div className="payment-options">
+                            {userProfile.addresses.map((address) => (
+                              <button
+                                key={address.id}
+                                className={`ghost-button glass ${
+                                  selectedAddressId === address.id ? 'is-selected' : ''
+                                }`}
+                                type="button"
+                                onClick={() => setSelectedAddressId(address.id)}
+                              >
+                                {address.label}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="muted-text">Sin direcciones guardadas.</p>
+                        )}
+                        <div className="payment-grid">
+                          <input
+                            type="text"
+                            placeholder="Agregar nueva dirección"
+                            value={newAddress}
+                            onChange={(event) => setNewAddress(event.target.value)}
+                          />
+                          <button className="ghost-button glass" type="button" onClick={handleAddAddress}>
+                            Guardar dirección
+                          </button>
+                        </div>
                       </div>
                     )}
-                  </div>
-                )}
 
-                {paymentStep === 2 && (
-                  <div className="payment-section">
-                    <h3>Día de entrega</h3>
-                    <p>Selecciona el tiempo estimado de entrega.</p>
-                    <div className="payment-options">
+                    {paymentStep === 2 && (
+                      <div className="payment-section">
+                        <h3>Día de entrega</h3>
+                        <p>Selecciona el tiempo estimado de entrega.</p>
+                        <div className="payment-options">
+                          <button
+                            className={`ghost-button glass ${
+                              shippingOption === '7' ? 'is-selected' : ''
+                            }`}
+                            type="button"
+                            onClick={() => setShippingOption('7')}
+                          >
+                            7 días hábiles
+                          </button>
+                          <button
+                            className={`ghost-button glass ${
+                              shippingOption === '10' ? 'is-selected' : ''
+                            }`}
+                            type="button"
+                            onClick={() => setShippingOption('10')}
+                          >
+                            10 días hábiles
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {paymentStep === 3 && (
+                      <div className="payment-section">
+                        <h3>Datos de tarjeta</h3>
+                        <p>Completa los datos para finalizar el pago.</p>
+                        {userProfile.cards.length > 0 && (
+                          <div className="payment-options">
+                            {userProfile.cards.map((card) => (
+                              <button
+                                key={card.id}
+                                className={`ghost-button glass ${
+                                  selectedCardId === card.id ? 'is-selected' : ''
+                                }`}
+                                type="button"
+                                onClick={() => setSelectedCardId(card.id)}
+                              >
+                                {card.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <div className="payment-grid">
+                          <input type="text" placeholder="Nombre en la tarjeta" />
+                          <input type="text" placeholder="Número de tarjeta" />
+                          <input type="text" placeholder="MM/AA" />
+                          <input type="text" placeholder="CVC" />
+                          <input
+                            type="text"
+                            placeholder="Guardar tarjeta como predeterminada"
+                            value={newCard}
+                            onChange={(event) => setNewCard(event.target.value)}
+                          />
+                          <button className="ghost-button glass" type="button" onClick={handleAddCard}>
+                            Guardar tarjeta
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="payment-actions">
                       <button
-                        className={`ghost-button glass ${
-                          shippingOption === '7' ? 'is-selected' : ''
-                        }`}
+                        className="ghost-button glass"
                         type="button"
-                        onClick={() => setShippingOption('7')}
+                        onClick={handlePrevPaymentStep}
+                        disabled={paymentStep === 1}
                       >
-                        7 días hábiles
+                        Volver
                       </button>
-                      <button
-                        className={`ghost-button glass ${
-                          shippingOption === '10' ? 'is-selected' : ''
-                        }`}
-                        type="button"
-                        onClick={() => setShippingOption('10')}
-                      >
-                        10 días hábiles
-                      </button>
+                      {paymentStep < 3 ? (
+                        <button className="hero-cta glass" type="button" onClick={handleNextPaymentStep}>
+                          Continuar
+                        </button>
+                      ) : (
+                        <button className="hero-cta glass" type="button">
+                          Confirmar
+                        </button>
+                      )}
                     </div>
-                  </div>
+                  </>
                 )}
-
-                {paymentStep === 3 && (
-                  <div className="payment-section">
-                    <h3>Datos de tarjeta</h3>
-                    <p>Completa los datos para finalizar el pago.</p>
-                    <div className="payment-grid">
-                      <input type="text" placeholder="Nombre en la tarjeta" />
-                      <input type="text" placeholder="Número de tarjeta" />
-                      <input type="text" placeholder="MM/AA" />
-                      <input type="text" placeholder="CVC" />
-                    </div>
-                  </div>
-                )}
-
-                <div className="payment-actions">
-                  <button
-                    className="ghost-button glass"
-                    type="button"
-                    onClick={handlePrevPaymentStep}
-                    disabled={paymentStep === 1}
-                  >
-                    Volver
-                  </button>
-                  {paymentStep < 3 ? (
-                    <button className="hero-cta glass" type="button" onClick={handleNextPaymentStep}>
-                      Continuar
-                    </button>
-                  ) : (
-                    <button className="hero-cta glass" type="button">
-                      Confirmar
-                    </button>
-                  )}
-                </div>
               </div>
             </section>
           )}
@@ -671,14 +812,135 @@ function App() {
                   </svg>
                 </div>
                 <h3>Acceso privado</h3>
-                <p>Ingresa para administrar tu experiencia.</p>
+                <p>Ingresa o regístrate para guardar tus datos.</p>
                 <div className="payment-grid">
-                  <input type="email" placeholder="Correo" />
-                  <input type="password" placeholder="Contraseña" />
+                  <input
+                    type="email"
+                    placeholder="Correo"
+                    value={authEmail}
+                    onChange={(event) => setAuthEmail(event.target.value)}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Contraseña"
+                    value={authPassword}
+                    onChange={(event) => setAuthPassword(event.target.value)}
+                  />
                 </div>
-                <button className="hero-cta glass" type="button">
-                  Entrar
-                </button>
+                {authError && <p className="form-error">{authError}</p>}
+                <div className="payment-actions">
+                  <button className="ghost-button glass" type="button" onClick={handleRegister}>
+                    Registrarme
+                  </button>
+                  <button className="hero-cta glass" type="button" onClick={handleLogin}>
+                    Entrar
+                  </button>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {route === '/configuracion' && (
+            <section className="account">
+              <div className="account-card">
+                <h3>Configuración de usuario</h3>
+                <p>Administra tus datos predeterminados y perfil.</p>
+
+                <div className="account-grid">
+                  <div className="account-section">
+                    <h4>Foto de perfil</h4>
+                    <div className="account-avatar">
+                      {profileAvatar ? (
+                        <img src={profileAvatar} alt="Avatar" />
+                      ) : (
+                        <span>Sin foto</span>
+                      )}
+                    </div>
+                    <div className="payment-grid">
+                      <input
+                        type="text"
+                        placeholder="URL de la foto"
+                        value={profileAvatar}
+                        onChange={(event) => setProfileAvatar(event.target.value)}
+                      />
+                      <button className="ghost-button glass" type="button" onClick={handleSaveAvatar}>
+                        Guardar foto
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="account-section">
+                    <h4>Direcciones predeterminadas</h4>
+                    <div className="account-list">
+                      {(userProfile?.addresses ?? []).map((address) => (
+                        <button
+                          key={address.id}
+                          type="button"
+                          className={`ghost-button glass ${
+                            userProfile?.defaultAddressId === address.id ? 'is-selected' : ''
+                          }`}
+                          onClick={() =>
+                            setUserProfile((profile) =>
+                              profile ? { ...profile, defaultAddressId: address.id } : profile
+                            )
+                          }
+                        >
+                          {address.label}
+                        </button>
+                      ))}
+                      {!(userProfile?.addresses?.length) && (
+                        <p className="muted-text">Sin direcciones registradas.</p>
+                      )}
+                    </div>
+                    <div className="payment-grid">
+                      <input
+                        type="text"
+                        placeholder="Agregar dirección"
+                        value={newAddress}
+                        onChange={(event) => setNewAddress(event.target.value)}
+                      />
+                      <button className="ghost-button glass" type="button" onClick={handleAddAddress}>
+                        Añadir
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="account-section">
+                    <h4>Tarjetas predeterminadas</h4>
+                    <div className="account-list">
+                      {(userProfile?.cards ?? []).map((card) => (
+                        <button
+                          key={card.id}
+                          type="button"
+                          className={`ghost-button glass ${
+                            userProfile?.defaultCardId === card.id ? 'is-selected' : ''
+                          }`}
+                          onClick={() =>
+                            setUserProfile((profile) =>
+                              profile ? { ...profile, defaultCardId: card.id } : profile
+                            )
+                          }
+                        >
+                          {card.label}
+                        </button>
+                      ))}
+                      {!(userProfile?.cards?.length) && (
+                        <p className="muted-text">Sin tarjetas guardadas.</p>
+                      )}
+                    </div>
+                    <div className="payment-grid">
+                      <input
+                        type="text"
+                        placeholder="Agregar tarjeta"
+                        value={newCard}
+                        onChange={(event) => setNewCard(event.target.value)}
+                      />
+                      <button className="ghost-button glass" type="button" onClick={handleAddCard}>
+                        Añadir
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
           )}
@@ -767,6 +1029,29 @@ function App() {
           )}
         </main>
       )}
+
+      <button
+        className="theme-fab glass"
+        type="button"
+        onClick={handleToggleTheme}
+        aria-label={`Tema: ${themeMode === 'system' ? 'sistema' : themeMode}`}
+      >
+        {themeMode === 'system' ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="12" rx="2" />
+            <path d="M8 19h8" />
+          </svg>
+        ) : activeTheme === 'dark' ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1l2.1-2.1M17 7l2.1-2.1" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" />
+          </svg>
+        )}
+      </button>
 
       <footer className="footer">
         <div className="footer-columns">
