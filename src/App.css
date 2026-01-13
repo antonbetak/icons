@@ -1704,3 +1704,87 @@ input:focus-visible {
     animation: none;
   }
 }
+
+/* Editorial premium override for visible, elegant motion */
+.cosmic-background {
+  background-color: #0b0f1a;
+  background-image:
+    radial-gradient(1200px 900px at 10% 15%, rgba(66, 90, 150, 0.6), transparent 68%),
+    radial-gradient(1100px 900px at 90% 20%, rgba(40, 58, 110, 0.55), transparent 66%),
+    radial-gradient(1000px 900px at 50% 90%, rgba(20, 30, 60, 0.6), transparent 70%),
+    linear-gradient(145deg, rgba(8, 12, 22, 0.98), rgba(14, 18, 32, 0.98));
+  animation: editorial-flow 18s ease-in-out infinite alternate;
+}
+
+.cosmic-background::before {
+  background-image:
+    radial-gradient(800px 620px at 18% 70%, rgba(86, 110, 170, 0.35), transparent 70%),
+    radial-gradient(720px 580px at 82% 30%, rgba(48, 72, 120, 0.32), transparent 66%);
+  opacity: 0.75;
+  animation: editorial-sheen-fast 16s linear infinite;
+}
+
+.cosmic-background::after {
+  background-image:
+    linear-gradient(90deg, rgba(30, 44, 78, 0.45), rgba(10, 16, 30, 0.05), rgba(30, 44, 78, 0.45));
+  opacity: 0.65;
+  animation: editorial-band-fast 14s ease-in-out infinite;
+}
+
+.theme-light .cosmic-background {
+  background-color: #f6f2ed;
+  background-image:
+    radial-gradient(1200px 900px at 12% 18%, rgba(190, 210, 230, 0.98), transparent 68%),
+    radial-gradient(1100px 900px at 88% 22%, rgba(210, 218, 206, 0.96), transparent 66%),
+    radial-gradient(1000px 900px at 50% 88%, rgba(236, 224, 210, 0.98), transparent 70%),
+    linear-gradient(145deg, rgba(248, 243, 238, 0.99), rgba(232, 238, 244, 0.97));
+  animation: editorial-flow 18s ease-in-out infinite alternate;
+}
+
+.theme-light .cosmic-background::before {
+  background-image:
+    radial-gradient(900px 720px at 20% 72%, rgba(182, 200, 220, 0.5), transparent 70%),
+    radial-gradient(800px 640px at 80% 32%, rgba(198, 206, 198, 0.45), transparent 66%);
+  opacity: 0.8;
+}
+
+.theme-light .cosmic-background::after {
+  background-image:
+    linear-gradient(90deg, rgba(210, 224, 236, 0.75), rgba(240, 242, 244, 0.25), rgba(210, 224, 236, 0.75));
+  opacity: 0.7;
+}
+
+@keyframes editorial-flow {
+  0% {
+    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
+  }
+  100% {
+    background-position: 0% 20%, 100% -18%, 50% 84%, 100% 100%;
+  }
+}
+
+@keyframes editorial-sheen-fast {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -12%, 0);
+  }
+}
+
+@keyframes editorial-band-fast {
+  0% {
+    transform: translate3d(-14%, 0, 0);
+  }
+  100% {
+    transform: translate3d(14%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-background,
+  .cosmic-background::before,
+  .cosmic-background::after {
+    animation: none;
+  }
+}
