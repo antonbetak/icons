@@ -207,7 +207,7 @@ function App() {
     []
   )
 
-  const currentPage = pages[route] ?? configPage ?? pages['/']
+  const currentPage = pages[route] ?? (route === '/configuracion' ? configPage : pages['/'])
 
   const handleSelectProduct = (product) => {
     setSelectedProduct(product)
@@ -338,6 +338,18 @@ function App() {
     setUserProfile((profile) => (profile ? { ...profile, avatar: profileAvatar } : profile))
   }
 
+  const handleAvatarFile = (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : ''
+      setProfileAvatar(result)
+      setUserProfile((profile) => (profile ? { ...profile, avatar: result } : profile))
+    }
+    reader.readAsDataURL(file)
+  }
+
   const handleLogout = () => {
     setUserProfile(null)
     setAuthEmail('')
@@ -380,7 +392,13 @@ function App() {
             aria-label={userProfile ? 'Configuración' : 'Log in'}
           >
             {userProfile ? (
-              <span className="nav-avatar">{userProfile.email.charAt(0).toUpperCase()}</span>
+              <span className="nav-avatar">
+                {userProfile.avatar ? (
+                  <img src={userProfile.avatar} alt="Avatar" />
+                ) : (
+                  userProfile.email.charAt(0).toUpperCase()
+                )}
+              </span>
             ) : (
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="8" r="4" />
@@ -889,6 +907,7 @@ function App() {
                         value={profileAvatar}
                         onChange={(event) => setProfileAvatar(event.target.value)}
                       />
+                      <input type="file" accept="image/*" onChange={handleAvatarFile} />
                       <button className="ghost-button glass" type="button" onClick={handleSaveAvatar}>
                         Guardar foto
                       </button>

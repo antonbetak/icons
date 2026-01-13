@@ -252,6 +252,14 @@ input:focus-visible {
   text-transform: uppercase;
   letter-spacing: 0.2rem;
   font-size: 0.65rem;
+  overflow: hidden;
+}
+
+.nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .theme-fab {
@@ -433,6 +441,18 @@ input:focus-visible {
   margin: 0 auto;
   z-index: 1;
   animation: page-fade 0.4s ease;
+  position: relative;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: radial-gradient(circle at 12% 10%, rgba(120, 160, 255, 0.08), transparent 50%),
+    radial-gradient(circle at 85% 20%, rgba(255, 170, 210, 0.06), transparent 45%);
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .section-head {
@@ -440,6 +460,8 @@ input:focus-visible {
   margin-bottom: 3rem;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
+  position: relative;
+  padding-bottom: 1.2rem;
 }
 
 .section-head p {
@@ -451,6 +473,17 @@ input:focus-visible {
 .section-head h2 {
   margin: 0;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.section-head::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
 }
 
 .shop-group {
@@ -493,11 +526,22 @@ input:focus-visible {
   box-shadow: 0 20px 40px var(--shadow);
   scroll-snap-align: start;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 24px 50px var(--shadow-strong);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(120, 160, 255, 0.6), transparent);
+  opacity: 0.6;
 }
 
 .product-image {
@@ -1073,6 +1117,10 @@ input:focus-visible {
   gap: 1rem;
 }
 
+.account-panel.glass::after {
+  opacity: 0;
+}
+
 .account-panel h4 {
   margin: 0 0 1rem;
   text-transform: uppercase;
@@ -1142,6 +1190,13 @@ input:focus-visible {
   padding: 0.8rem 1rem;
   color: inherit;
   font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-grid input:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(120, 160, 255, 0.2);
+  outline: none;
 }
 
 .page.theme-light .carousel::-webkit-scrollbar-thumb {
@@ -1185,6 +1240,16 @@ input:focus-visible {
   box-shadow: 0 20px 40px var(--shadow);
   display: grid;
   gap: 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(120, 160, 255, 0.08), transparent 55%);
+  pointer-events: none;
 }
 
 .ghost-button {
@@ -1253,6 +1318,16 @@ input:focus-visible {
   border: 1px solid var(--border-strong);
   background: var(--surface-muted);
   box-shadow: 0 20px 40px var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 170, 210, 0.08), transparent 55%);
+  pointer-events: none;
 }
 
 @keyframes page-fade {
