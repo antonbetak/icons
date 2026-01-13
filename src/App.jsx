@@ -324,6 +324,11 @@ function App() {
     }))
   }
 
+  const handleBackToCatalog = () => {
+    setGalleryOpen(false)
+    window.location.hash = '#/tienda'
+  }
+
   const handleRemoveFromCart = (indexToRemove) => {
     setCartItems((items) => items.filter((_, index) => index !== indexToRemove))
   }
@@ -811,6 +816,9 @@ function App() {
                     {selectedProduct.category === 'gorras' ? 'Ajuste' : 'Talla'} seleccionada: {selectedSize}
                   </p>
                   <div className="preview-actions">
+                    <button className="ghost-button glass" type="button" onClick={handleBackToCatalog}>
+                      Regresar a prendas
+                    </button>
                     <button
                       className="hero-cta glass"
                       type="button"
