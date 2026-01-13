@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "Taylor Gothic";
+  src:
+    url("./assets/fonts/taylor_gothic/TaylorGothic.woff2") format("woff2"),
+    url("./assets/fonts/taylor_gothic/TaylorGothic.woff") format("woff"),
+    url("./assets/fonts/taylor_gothic/TaylorGothic.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Tipografía base del proyecto */
 :root {
   font-family: 'Helvetica Neue', 'Montserrat', Arial, sans-serif;
   line-height: 1.5;
@@ -9,6 +21,13 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Clase para usar Taylor Gothic SOLO donde se necesite */
+.font-gothic {
+  font-family: "Taylor Gothic", serif;
+  letter-spacing: 0.04em;
+}
+
+/* Base */
 * {
   box-sizing: border-box;
 }
@@ -23,10 +42,7 @@ a {
   text-decoration: none;
 }
 
-button {
-  font-family: inherit;
-}
-
+button,
 input {
   font-family: inherit;
 }
