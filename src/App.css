@@ -83,7 +83,7 @@
     radial-gradient(circle at 88% 70%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px);
   background-size: 100% 100%;
   opacity: 1;
-  animation: starfield-drift 18s linear infinite, starfield-twinkle 4s ease-in-out infinite;
+  animation: starfield-drift 28s linear infinite, starfield-twinkle 6s ease-in-out infinite;
 }
 
 .page::after {
@@ -92,12 +92,11 @@
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.18) 0 1px, transparent 2px),
     radial-gradient(ellipse at 15% 65%, rgba(255, 255, 255, 0.45) 0 1px, transparent 40px),
     radial-gradient(ellipse at 70% 40%, rgba(255, 255, 255, 0.35) 0 1px, transparent 36px),
-    radial-gradient(ellipse at 35% 25%, rgba(255, 255, 255, 0.3) 0 1px, transparent 30px),
-    linear-gradient(135deg, transparent 45%, rgba(255, 255, 255, 0.8) 50%, transparent 55%);
-  background-size: 100% 100%, 140% 140%, 200% 200%, 220% 220%, 240% 240%, 220px 2px;
-  background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%, -40% 110%;
+    radial-gradient(ellipse at 35% 25%, rgba(255, 255, 255, 0.3) 0 1px, transparent 30px);
+  background-size: 100% 100%, 140% 140%, 200% 200%, 220% 220%, 240% 240%;
+  background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%;
   opacity: 0.95;
-  animation: nebula-shift 10s ease-in-out infinite, comet-streaks 6s linear infinite;
+  animation: nebula-shift 14s ease-in-out infinite;
 }
 
 .page.theme-light::before {
@@ -140,8 +139,7 @@
     radial-gradient(circle at 50% 50%, rgba(60, 75, 105, 0.3) 0 1px, transparent 2px),
     radial-gradient(ellipse at 15% 65%, rgba(70, 85, 115, 0.35) 0 1px, transparent 40px),
     radial-gradient(ellipse at 70% 40%, rgba(70, 85, 115, 0.3) 0 1px, transparent 36px),
-    radial-gradient(ellipse at 35% 25%, rgba(70, 85, 115, 0.28) 0 1px, transparent 30px),
-    linear-gradient(135deg, transparent 45%, rgba(70, 85, 115, 0.7) 50%, transparent 55%);
+    radial-gradient(ellipse at 35% 25%, rgba(70, 85, 115, 0.28) 0 1px, transparent 30px);
   opacity: 0.85;
 }
 
@@ -192,14 +190,6 @@
   }
 }
 
-@keyframes comet-streaks {
-  0% {
-    background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%, -40% 110%;
-  }
-  100% {
-    background-position: 85% 20%, 10% 90%, 120% 120%, -20% -10%, 50% 50%, 140% -40%;
-  }
-}
 
 a:focus-visible,
 button:focus-visible,
