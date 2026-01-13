@@ -1147,6 +1147,36 @@ input:focus-visible {
   flex-wrap: wrap;
 }
 
+.order-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(6, 8, 18, 0.6);
+  z-index: 30;
+  padding: 1.5rem;
+}
+
+.page.theme-light .order-modal-overlay {
+  background: rgba(230, 235, 255, 0.7);
+}
+
+.order-modal {
+  width: min(420px, 92vw);
+  padding: 2.4rem;
+  border-radius: 24px;
+  text-align: center;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: 0 28px 60px var(--shadow-strong);
+  display: grid;
+  gap: 1.4rem;
+}
+
+.order-modal p {
+  margin: 0;
+}
+
 .form-error {
   margin: 0 0 1rem;
   font-size: 0.7rem;

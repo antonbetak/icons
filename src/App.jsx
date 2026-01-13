@@ -162,6 +162,8 @@ function App() {
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [paymentStep, setPaymentStep] = useState(1)
+  const [orderModalOpen, setOrderModalOpen] = useState(false)
+  const [orderNumber, setOrderNumber] = useState('')
   const [shippingOption, setShippingOption] = useState('7')
   const [selectedAddressId, setSelectedAddressId] = useState(null)
   const [selectedCardId, setSelectedCardId] = useState(null)
@@ -368,8 +370,16 @@ function App() {
   }
 
   const handleConfirmPayment = () => {
+    const nextOrderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`
+    setOrderNumber(nextOrderNumber)
+    setOrderModalOpen(true)
     setCartItems([])
     setPaymentStep(1)
+  }
+
+  const handleReturnToStore = () => {
+    setOrderModalOpen(false)
+    window.location.hash = '#/tienda'
   }
 
   const handleLogin = () => {
@@ -1095,6 +1105,17 @@ function App() {
                   </>
                 )}
               </div>
+              {orderModalOpen && (
+                <div className="order-modal-overlay">
+                  <div className="order-modal glass">
+                    <h3>Gracias por tu compra</h3>
+                    <p>Tu número de orden es <strong>{orderNumber}</strong>.</p>
+                    <button className="hero-cta glass" type="button" onClick={handleReturnToStore}>
+                      Volver a la tienda
+                    </button>
+                  </div>
+                </div>
+              )}
             </section>
           )}
 
