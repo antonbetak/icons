@@ -877,7 +877,7 @@ input:focus-visible {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  padding: 3.4rem 2.5rem 2.5rem;
+  padding: 4.2rem 2.5rem 2.5rem;
   border-radius: 28px;
   border: 1px solid var(--border);
   background: var(--surface-soft);
@@ -889,8 +889,8 @@ input:focus-visible {
 
 .preview-back {
   position: absolute;
-  top: 1.3rem;
-  left: 1.3rem;
+  top: 2rem;
+  left: 2rem;
   width: 36px;
   height: 36px;
   padding: 0;
