@@ -1604,15 +1604,10 @@ input:focus-visible {
 }
 
 /* Editorial animated background (encapsulated, premium, visible) */
-.page:has(.cosmic-background)::before,
-.page:has(.cosmic-background)::after {
-  display: none;
-}
-
 .cosmic-background {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   background-color: #0a0f1b;
   background-image:
