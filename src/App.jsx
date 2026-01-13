@@ -619,7 +619,7 @@ function App() {
     >
       <div className="cosmic-background" aria-hidden="true" />
       <header className="top-nav">
-        <a className="brand" href="#/">
+        <a className="brand font-gothic" href="#/">
           ICONS
         </a>
         <div className="nav-actions">
