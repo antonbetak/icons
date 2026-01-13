@@ -770,8 +770,13 @@ function App() {
           {route === '/tallas' && selectedProduct && (
             <section className="preview">
               <div className="preview-card">
-                <button className="preview-back ghost-button glass" type="button" onClick={handleBackToCatalog}>
-                  Regresar a prendas
+                <button
+                  className="preview-back ghost-button glass"
+                  type="button"
+                  onClick={handleBackToCatalog}
+                  aria-label="Regresar a prendas"
+                >
+                  ←
                 </button>
                 <div className="preview-media">
                   <button
@@ -819,9 +824,6 @@ function App() {
                     {selectedProduct.category === 'gorras' ? 'Ajuste' : 'Talla'} seleccionada: {selectedSize}
                   </p>
                   <div className="preview-actions">
-                    <button className="ghost-button glass" type="button" onClick={handleBackToCatalog}>
-                      Regresar a prendas
-                    </button>
                     <button
                       className="hero-cta glass"
                       type="button"
