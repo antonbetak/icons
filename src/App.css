@@ -78,14 +78,13 @@
 
 .page::after {
   background:
-    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.95) 0 160px, transparent 360px),
+    radial-gradient(circle at 85% 20%, rgba(0, 0, 0, 0.95) 0 120px, transparent 320px),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.18) 0 1px, transparent 2px),
-    linear-gradient(120deg, transparent 42%, rgba(255, 255, 255, 0.8) 46%, transparent 56%),
-    linear-gradient(300deg, transparent 36%, rgba(255, 255, 255, 0.65) 41%, transparent 52%),
-    linear-gradient(40deg, transparent 30%, rgba(255, 255, 255, 0.55) 34%, transparent 46%),
-    linear-gradient(220deg, transparent 32%, rgba(255, 255, 255, 0.5) 36%, transparent 48%);
-  background-size: 100% 100%, 140% 140%, 260% 260%, 240% 240%, 220% 220%, 240% 240%;
-  background-position: 50% 50%, 10% 90%, 0% 0%, 100% 100%, -20% 20%, 120% 120%;
+    radial-gradient(ellipse at 15% 65%, rgba(255, 255, 255, 0.45) 0 1px, transparent 40px),
+    radial-gradient(ellipse at 70% 40%, rgba(255, 255, 255, 0.35) 0 1px, transparent 36px),
+    radial-gradient(ellipse at 35% 25%, rgba(255, 255, 255, 0.3) 0 1px, transparent 30px);
+  background-size: 100% 100%, 140% 140%, 200% 200%, 220% 220%, 240% 240%;
+  background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%;
   opacity: 0.95;
   animation: nebula-shift 6s ease-in-out infinite, comet-streaks 2s linear infinite;
 }
@@ -116,12 +115,11 @@
 
 .page.theme-light::after {
   background:
-    radial-gradient(circle at 50% 50%, rgba(210, 220, 235, 0.95) 0 160px, transparent 360px),
+    radial-gradient(circle at 85% 20%, rgba(210, 220, 235, 0.95) 0 120px, transparent 320px),
     radial-gradient(circle at 50% 50%, rgba(60, 75, 105, 0.3) 0 1px, transparent 2px),
-    linear-gradient(120deg, transparent 42%, rgba(60, 75, 105, 0.55) 46%, transparent 56%),
-    linear-gradient(300deg, transparent 36%, rgba(70, 85, 115, 0.5) 41%, transparent 52%),
-    linear-gradient(40deg, transparent 30%, rgba(80, 95, 125, 0.45) 34%, transparent 46%),
-    linear-gradient(220deg, transparent 32%, rgba(70, 85, 115, 0.42) 36%, transparent 48%);
+    radial-gradient(ellipse at 15% 65%, rgba(70, 85, 115, 0.35) 0 1px, transparent 40px),
+    radial-gradient(ellipse at 70% 40%, rgba(70, 85, 115, 0.3) 0 1px, transparent 36px),
+    radial-gradient(ellipse at 35% 25%, rgba(70, 85, 115, 0.28) 0 1px, transparent 30px);
   opacity: 0.85;
 }
 
@@ -159,10 +157,10 @@
 
 @keyframes comet-streaks {
   0% {
-    background-position: 50% 50%, 10% 90%, 20% 30%, 80% 70%, -20% -10%, 120% 110%;
+    background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%;
   }
   100% {
-    background-position: 50% 50%, 10% 90%, 20% 30%, 80% 70%, 120% 110%, -20% -10%;
+    background-position: 85% 20%, 10% 90%, 120% 120%, -20% -10%, 50% 50%;
   }
 }
 
