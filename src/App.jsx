@@ -9,6 +9,7 @@ const products = [
     price: '$120',
     tone: 'image-aurora',
     category: 'gorras',
+    sizes: ['Unitalla'],
   },
   {
     id: 'gorra-lux',
@@ -17,6 +18,7 @@ const products = [
     price: '$135',
     tone: 'image-vanta',
     category: 'gorras',
+    sizes: ['Unitalla'],
   },
   {
     id: 'gorra-nocturna',
@@ -25,6 +27,7 @@ const products = [
     price: '$145',
     tone: 'image-orbit',
     category: 'gorras',
+    sizes: ['Unitalla'],
   },
   {
     id: 'gorra-aurora',
@@ -33,6 +36,7 @@ const products = [
     price: '$150',
     tone: 'image-mirror',
     category: 'gorras',
+    sizes: ['Unitalla'],
   },
   {
     id: 'playera-constelacion',
@@ -41,6 +45,7 @@ const products = [
     price: '$180',
     tone: 'image-vanta',
     category: 'playeras',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
     id: 'playera-noir',
@@ -49,6 +54,7 @@ const products = [
     price: '$195',
     tone: 'image-aurora',
     category: 'playeras',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
     id: 'playera-orbita',
@@ -57,6 +63,7 @@ const products = [
     price: '$210',
     tone: 'image-mirror',
     category: 'playeras',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
   {
     id: 'playera-eclipse',
@@ -65,6 +72,7 @@ const products = [
     price: '$220',
     tone: 'image-orbit',
     category: 'playeras',
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
   },
 ]
 
@@ -103,10 +111,22 @@ const configPage = {
 
 const sizes = ['S', 'M', 'L', 'XL', 'XXL']
 const hatFitLabel = 'Ajuste trasero'
+const adminUser = {
+  email: 'erik@gmail.com',
+  password: '1234',
+  name: 'Erik Admin',
+  role: 'admin',
+  avatar: '',
+  addresses: [],
+  cards: [],
+  defaultAddressId: null,
+  defaultCardId: null,
+}
 const demoUser = {
   email: 'betakanton9@gmail.com',
   password: '1234',
   name: 'Beta Kantón',
+  role: 'customer',
   avatar: '',
   addresses: [
     { id: 'addr-1', label: 'Casa · Calle Sierra 120, CDMX' },
@@ -134,7 +154,9 @@ function App() {
     if (typeof window === 'undefined') return 'dark'
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
   })
+  const [productList, setProductList] = useState(products)
   const [selectedProduct, setSelectedProduct] = useState(products[0])
+  const [interactions, setInteractions] = useState({})
   const [selectedSize, setSelectedSize] = useState('M')
   const [selectedAngle, setSelectedAngle] = useState('A')
   const [galleryOpen, setGalleryOpen] = useState(false)
@@ -148,7 +170,11 @@ function App() {
     const stored = window.localStorage.getItem('icons_user_profile')
     if (!stored) return null
     try {
-      return JSON.parse(stored)
+      const parsed = JSON.parse(stored)
+      return {
+        ...parsed,
+        role: parsed.role ?? 'customer',
+      }
     } catch (error) {
       return null
     }
@@ -168,6 +194,15 @@ function App() {
     } catch (error) {
       return []
     }
+  })
+  const [adminNotice, setAdminNotice] = useState('')
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    desc: '',
+    price: '',
+    category: 'playeras',
+    tone: 'image-aurora',
+    sizes: 'S, M, L',
   })
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
@@ -209,7 +244,13 @@ function App() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (userProfile) {
-      window.localStorage.setItem('icons_user_profile', JSON.stringify(userProfile))
+      window.localStorage.setItem(
+        'icons_user_profile',
+        JSON.stringify({
+          ...userProfile,
+          role: userProfile.role ?? 'customer',
+        })
+      )
     } else {
       window.localStorage.removeItem('icons_user_profile')
     }
@@ -220,31 +261,47 @@ function App() {
     window.localStorage.setItem('icons_cart', JSON.stringify(cartItems))
   }, [cartItems])
 
-  const navItems = useMemo(
-    () =>
-      Object.entries(pages).map(([path, page]) => ({
-        path,
-        label: page.label,
-      })),
-    []
-  )
+  const navItems = useMemo(() => {
+    const items = Object.entries(pages).map(([path, page]) => ({
+      path,
+      label: page.label,
+    }))
+    if (userProfile?.role === 'admin') {
+      items.push({ path: '/admin', label: 'Admin' })
+    }
+    return items
+  }, [userProfile?.role])
 
-  const currentPage = pages[route] ?? (route === '/configuracion' ? configPage : pages['/'])
+  const currentPage =
+    pages[route] ??
+    (route === '/configuracion'
+      ? configPage
+      : route === '/admin'
+        ? {
+            title: 'Panel administrador',
+            description: 'Control total de inventario y métricas clave.',
+          }
+        : pages['/'])
 
   const handleSelectProduct = (product) => {
     setSelectedProduct(product)
-    if (product.category === 'gorras') {
-      setSelectedSize(hatFitLabel)
-    } else {
-      setSelectedSize('M')
-    }
+    const fallbackSizes = product.category === 'gorras' ? [hatFitLabel] : sizes
+    const nextSizes = product.sizes?.length ? product.sizes : fallbackSizes
+    setSelectedSize(nextSizes[0])
     setSelectedAngle('A')
     setGalleryOpen(false)
+    setInteractions((current) => ({
+      ...current,
+      [product.id]: {
+        views: (current[product.id]?.views ?? 0) + 1,
+        cartAdds: current[product.id]?.cartAdds ?? 0,
+      },
+    }))
     window.location.hash = '#/tallas'
   }
 
   const handleAddToCart = (product) => {
-    const sizeLabel = product.category === 'gorras' ? hatFitLabel : selectedSize
+    const sizeLabel = selectedSize
     setCartItems((items) => [
       ...items,
       {
@@ -254,6 +311,13 @@ function App() {
     ])
     setCartNotice(`Añadido: ${product.name} · ${sizeLabel}`)
     window.setTimeout(() => setCartNotice(''), 1800)
+    setInteractions((current) => ({
+      ...current,
+      [product.id]: {
+        views: current[product.id]?.views ?? 0,
+        cartAdds: (current[product.id]?.cartAdds ?? 0) + 1,
+      },
+    }))
   }
 
   const handleRemoveFromCart = (indexToRemove) => {
@@ -292,6 +356,12 @@ function App() {
   }
 
   const handleLogin = () => {
+    if (authEmail === adminUser.email && authPassword === adminUser.password) {
+      setUserProfile(adminUser)
+      setAuthError('')
+      window.location.hash = '#/admin'
+      return
+    }
     if (authEmail === demoUser.email && authPassword === demoUser.password) {
       setUserProfile(demoUser)
       setAuthError('')
@@ -310,6 +380,7 @@ function App() {
       email: authEmail,
       password: authPassword,
       name: 'Nuevo usuario',
+      role: 'customer',
       avatar: '',
       addresses: [],
       cards: [],
@@ -382,6 +453,93 @@ function App() {
     }
     window.location.hash = '#/login'
   }
+
+  const handleProductUpdate = (id, field, value) => {
+    setProductList((items) =>
+      items.map((item) => {
+        if (item.id !== id) return item
+        if (field === 'sizes') {
+          const parsed = value
+            .split(',')
+            .map((size) => size.trim())
+            .filter(Boolean)
+          return { ...item, sizes: parsed }
+        }
+        return { ...item, [field]: value }
+      })
+    )
+  }
+
+  const handleAddProduct = () => {
+    if (!newProduct.name.trim() || !newProduct.price.trim() || !newProduct.desc.trim()) {
+      setAdminNotice('Completa nombre, descripción y precio.')
+      return
+    }
+    const parsedSizes = newProduct.sizes
+      .split(',')
+      .map((size) => size.trim())
+      .filter(Boolean)
+    const nextProduct = {
+      id: `producto-${Date.now()}`,
+      name: newProduct.name.trim(),
+      desc: newProduct.desc.trim(),
+      price: newProduct.price.trim(),
+      category: newProduct.category,
+      tone: newProduct.tone,
+      sizes: parsedSizes.length ? parsedSizes : newProduct.category === 'gorras' ? ['Unitalla'] : sizes,
+    }
+    setProductList((items) => [...items, nextProduct])
+    setNewProduct({
+      name: '',
+      desc: '',
+      price: '',
+      category: 'playeras',
+      tone: 'image-aurora',
+      sizes: 'S, M, L',
+    })
+    setAdminNotice('Producto agregado.')
+    window.setTimeout(() => setAdminNotice(''), 1800)
+  }
+
+  const handleRemoveProduct = (id) => {
+    setProductList((items) => items.filter((item) => item.id !== id))
+    setCartItems((items) => items.filter((item) => item.id !== id))
+  }
+
+  useEffect(() => {
+    setSelectedProduct((current) => {
+      const found = productList.find((item) => item.id === current?.id)
+      return found ?? productList[0]
+    })
+  }, [productList])
+
+  useEffect(() => {
+    if (!selectedProduct) return
+    const fallbackSizes = selectedProduct.category === 'gorras' ? [hatFitLabel] : sizes
+    const nextSizes = selectedProduct.sizes?.length ? selectedProduct.sizes : fallbackSizes
+    if (!nextSizes.includes(selectedSize)) {
+      setSelectedSize(nextSizes[0])
+    }
+  }, [selectedProduct, selectedSize])
+
+  const adminStats = useMemo(() => {
+    const metrics = productList.map((product) => ({
+      ...product,
+      views: interactions[product.id]?.views ?? 0,
+      cartAdds: interactions[product.id]?.cartAdds ?? 0,
+    }))
+    const totalViews = metrics.reduce((sum, item) => sum + item.views, 0)
+    const totalCartAdds = metrics.reduce((sum, item) => sum + item.cartAdds, 0)
+    const topViewed = [...metrics].sort((a, b) => b.views - a.views)[0]
+    const topCart = [...metrics].sort((a, b) => b.cartAdds - a.cartAdds)[0]
+    return {
+      totalViews,
+      totalCartAdds,
+      totalProducts: productList.length,
+      topViewed,
+      topCart,
+    }
+  }, [interactions, productList])
 
   return (
     <div
@@ -464,7 +622,7 @@ function App() {
               <div className="shop-group">
                 <h3>Gorras</h3>
                 <div className="carousel">
-                  {products
+                  {productList
                     .filter((product) => product.category === 'gorras')
                     .map((item) => (
                       <article
@@ -509,7 +667,7 @@ function App() {
               <div className="shop-group">
                 <h3>Playeras</h3>
                 <div className="carousel">
-                  {products
+                  {productList
                     .filter((product) => product.category === 'playeras')
                     .map((item) => (
                       <article
@@ -586,25 +744,21 @@ function App() {
                   <h3>{selectedProduct.name}</h3>
                   <p>{selectedProduct.desc}</p>
                   <p className="preview-price">{selectedProduct.price}</p>
-                  {selectedProduct.category === 'playeras' ? (
-                    <>
-                      <div className="size-grid">
-                        {sizes.map((size) => (
-                          <button
-                            className={`size-pill glass ${selectedSize === size ? 'is-selected' : ''}`}
-                            type="button"
-                            key={size}
-                            onClick={() => setSelectedSize(size)}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                      <p className="size-note">Talla seleccionada: {selectedSize}</p>
-                    </>
-                  ) : (
-                    <p className="size-note">{hatFitLabel}</p>
-                  )}
+                  <div className="size-grid">
+                    {(selectedProduct.sizes?.length ? selectedProduct.sizes : sizes).map((size) => (
+                      <button
+                        className={`size-pill glass ${selectedSize === size ? 'is-selected' : ''}`}
+                        type="button"
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="size-note">
+                    {selectedProduct.category === 'gorras' ? 'Ajuste' : 'Talla'} seleccionada: {selectedSize}
+                  </p>
                   <div className="preview-actions">
                     <button
                       className="hero-cta glass"
@@ -1033,6 +1187,186 @@ function App() {
                   </div>
                 </div>
               </div>
+            </section>
+          )}
+
+          {route === '/admin' && (
+            <section className="admin section-reveal">
+              {userProfile?.role !== 'admin' ? (
+                <div className="admin-card glass">
+                  <h3>Acceso restringido</h3>
+                  <p>Este panel es exclusivo para administradores.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="admin-header">
+                    <div>
+                      <h3>Dashboard ejecutivo</h3>
+                      <p className="muted-text">Resumen de desempeño e inventario activo.</p>
+                    </div>
+                    <button className="ghost-button glass" type="button" onClick={handleLogout}>
+                      Cerrar sesión admin
+                    </button>
+                  </div>
+                  <div className="admin-grid">
+                    <div className="admin-card glass">
+                      <h4>Indicadores clave</h4>
+                      <div className="admin-stats">
+                        <div className="admin-stat">
+                          <span>Total productos</span>
+                          <strong>{adminStats.totalProducts}</strong>
+                        </div>
+                        <div className="admin-stat">
+                          <span>Vistas registradas</span>
+                          <strong>{adminStats.totalViews}</strong>
+                        </div>
+                        <div className="admin-stat">
+                          <span>Añadidos al carrito</span>
+                          <strong>{adminStats.totalCartAdds}</strong>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="admin-card glass">
+                      <h4>Más interacción</h4>
+                      <div className="admin-highlight">
+                        <div>
+                          <p className="muted-text">Producto con más vistas</p>
+                          <strong>{adminStats.topViewed?.name ?? 'Sin datos'}</strong>
+                          <span>{adminStats.topViewed?.views ?? 0} vistas</span>
+                        </div>
+                        <div>
+                          <p className="muted-text">Producto con más carrito</p>
+                          <strong>{adminStats.topCart?.name ?? 'Sin datos'}</strong>
+                          <span>{adminStats.topCart?.cartAdds ?? 0} acciones</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="admin-card glass admin-form">
+                    <h4>Agregar nuevo producto</h4>
+                    <div className="admin-form-grid">
+                      <input
+                        type="text"
+                        placeholder="Nombre"
+                        value={newProduct.name}
+                        onChange={(event) => setNewProduct((current) => ({ ...current, name: event.target.value }))}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Precio (ej. $190)"
+                        value={newProduct.price}
+                        onChange={(event) => setNewProduct((current) => ({ ...current, price: event.target.value }))}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Descripción"
+                        value={newProduct.desc}
+                        onChange={(event) => setNewProduct((current) => ({ ...current, desc: event.target.value }))}
+                      />
+                      <select
+                        value={newProduct.category}
+                        onChange={(event) =>
+                          setNewProduct((current) => ({ ...current, category: event.target.value }))
+                        }
+                      >
+                        <option value="playeras">Playeras</option>
+                        <option value="gorras">Gorras</option>
+                      </select>
+                      <select
+                        value={newProduct.tone}
+                        onChange={(event) => setNewProduct((current) => ({ ...current, tone: event.target.value }))}
+                      >
+                        <option value="image-aurora">Aurora</option>
+                        <option value="image-vanta">Vanta</option>
+                        <option value="image-orbit">Orbit</option>
+                        <option value="image-mirror">Mirror</option>
+                      </select>
+                      <input
+                        type="text"
+                        placeholder="Tallas (separadas por coma)"
+                        value={newProduct.sizes}
+                        onChange={(event) => setNewProduct((current) => ({ ...current, sizes: event.target.value }))}
+                      />
+                    </div>
+                    {adminNotice && <p className="form-hint">{adminNotice}</p>}
+                    <button className="hero-cta glass" type="button" onClick={handleAddProduct}>
+                      Agregar producto
+                    </button>
+                  </div>
+
+                  <div className="admin-card glass">
+                    <h4>Inventario editable</h4>
+                    <div className="admin-table">
+                      {productList.map((item) => (
+                        <div className="admin-row" key={item.id}>
+                          <div className="admin-field">
+                            <label>Nombre</label>
+                            <input
+                              type="text"
+                              value={item.name}
+                              onChange={(event) => handleProductUpdate(item.id, 'name', event.target.value)}
+                            />
+                          </div>
+                          <div className="admin-field">
+                            <label>Descripción</label>
+                            <input
+                              type="text"
+                              value={item.desc}
+                              onChange={(event) => handleProductUpdate(item.id, 'desc', event.target.value)}
+                            />
+                          </div>
+                          <div className="admin-field">
+                            <label>Precio</label>
+                            <input
+                              type="text"
+                              value={item.price}
+                              onChange={(event) => handleProductUpdate(item.id, 'price', event.target.value)}
+                            />
+                          </div>
+                          <div className="admin-field">
+                            <label>Categoría</label>
+                            <select
+                              value={item.category}
+                              onChange={(event) => handleProductUpdate(item.id, 'category', event.target.value)}
+                            >
+                              <option value="playeras">Playeras</option>
+                              <option value="gorras">Gorras</option>
+                            </select>
+                          </div>
+                          <div className="admin-field">
+                            <label>Tono</label>
+                            <select
+                              value={item.tone}
+                              onChange={(event) => handleProductUpdate(item.id, 'tone', event.target.value)}
+                            >
+                              <option value="image-aurora">Aurora</option>
+                              <option value="image-vanta">Vanta</option>
+                              <option value="image-orbit">Orbit</option>
+                              <option value="image-mirror">Mirror</option>
+                            </select>
+                          </div>
+                          <div className="admin-field">
+                            <label>Tallas</label>
+                            <input
+                              type="text"
+                              value={(item.sizes ?? []).join(', ')}
+                              onChange={(event) => handleProductUpdate(item.id, 'sizes', event.target.value)}
+                            />
+                          </div>
+                          <button
+                            className="ghost-button glass admin-remove"
+                            type="button"
+                            onClick={() => handleRemoveProduct(item.id)}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </section>
           )}
 

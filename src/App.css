@@ -1431,6 +1431,112 @@ input:focus-visible {
   pointer-events: none;
 }
 
+.admin {
+  display: grid;
+  gap: 2rem;
+}
+
+.admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.admin-card {
+  padding: 2rem;
+  border-radius: 22px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: 0 20px 40px var(--shadow);
+}
+
+.admin-card h4 {
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.8rem;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.admin-stat {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.admin-stat strong {
+  font-size: 1.5rem;
+}
+
+.admin-highlight {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-highlight strong {
+  display: block;
+  font-size: 1.05rem;
+  margin: 0.4rem 0;
+}
+
+.admin-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.admin-form-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.admin-table {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-row {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.admin-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.admin-field label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18rem;
+  opacity: 0.7;
+}
+
+.admin-remove {
+  justify-self: flex-start;
+}
+
 @keyframes page-fade {
   from {
     opacity: 0;
