@@ -822,6 +822,7 @@ input:focus-visible {
   border: 1px solid var(--border);
   background: var(--surface-soft);
   box-shadow: 0 24px 50px var(--shadow-strong);
+  animation: none;
 }
 
 .preview-price {
@@ -1316,11 +1317,13 @@ input:focus-visible {
   gap: 2rem;
 }
 
-.about-hero {
+.about-intro {
   padding: 2rem;
   border-radius: 26px;
   display: grid;
-  gap: 1.4rem;
+  gap: 2rem;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .about-grid {
@@ -1331,14 +1334,14 @@ input:focus-visible {
 }
 
 .about-card {
-  padding: 1.8rem;
+  padding: 2rem;
   border-radius: 20px;
   display: grid;
   gap: 1.2rem;
 }
 
 .about-card.glass::after,
-.about-hero.glass::after {
+.about-intro.glass::after {
   opacity: 0;
 }
 
@@ -1518,12 +1521,45 @@ input:focus-visible {
     letter-spacing: 0.5rem;
   }
 
-  .about-hero {
-    padding: 1.6rem;
+  .hero {
+    padding: 4rem 6vw 3rem;
+    min-height: 60vh;
+  }
+
+  .hero-cta {
+    padding: 0.8rem 2rem;
+    letter-spacing: 0.2rem;
+  }
+
+  .content {
+    padding: 3rem 6vw 2.5rem;
   }
 
   .section-head {
-    letter-spacing: 0.2rem;
+    letter-spacing: 0.18rem;
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .product-card,
+  .story-card,
+  .about-card,
+  .contact-card,
+  .preview-card,
+  .payment-card,
+  .auth-card,
+  .account-card {
+    padding: 1.6rem;
+  }
+
+  .preview-card {
+    gap: 1.6rem;
+  }
+
+  .about-intro {
+    padding: 1.6rem;
   }
 
   .carousel {

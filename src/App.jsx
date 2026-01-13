@@ -143,14 +143,32 @@ function App() {
   const [shippingOption, setShippingOption] = useState('7')
   const [selectedAddressId, setSelectedAddressId] = useState(null)
   const [selectedCardId, setSelectedCardId] = useState(null)
-  const [userProfile, setUserProfile] = useState(null)
+  const [userProfile, setUserProfile] = useState(() => {
+    if (typeof window === 'undefined') return null
+    const stored = window.localStorage.getItem('icons_user_profile')
+    if (!stored) return null
+    try {
+      return JSON.parse(stored)
+    } catch (error) {
+      return null
+    }
+  })
   const [authEmail, setAuthEmail] = useState('')
   const [authPassword, setAuthPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [profileAvatar, setProfileAvatar] = useState('')
   const [newAddress, setNewAddress] = useState('')
   const [newCard, setNewCard] = useState('')
-  const [cartItems, setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState(() => {
+    if (typeof window === 'undefined') return []
+    const stored = window.localStorage.getItem('icons_cart')
+    if (!stored) return []
+    try {
+      return JSON.parse(stored)
+    } catch (error) {
+      return []
+    }
+  })
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
     const value = Number(item.price.replace(/[^0-9.]/g, ''))
@@ -189,14 +207,18 @@ function App() {
   }, [userProfile])
 
   useEffect(() => {
-    const handleUnload = () => {
-      setUserProfile(null)
-      setAuthEmail('')
-      setAuthPassword('')
+    if (typeof window === 'undefined') return
+    if (userProfile) {
+      window.localStorage.setItem('icons_user_profile', JSON.stringify(userProfile))
+    } else {
+      window.localStorage.removeItem('icons_user_profile')
     }
-    window.addEventListener('beforeunload', handleUnload)
-    return () => window.removeEventListener('beforeunload', handleUnload)
-  }, [])
+  }, [userProfile])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem('icons_cart', JSON.stringify(cartItems))
+  }, [cartItems])
 
   const navItems = useMemo(
     () =>
@@ -355,6 +377,9 @@ function App() {
     setAuthEmail('')
     setAuthPassword('')
     setAuthError('')
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('icons_user_profile')
+    }
     window.location.hash = '#/login'
   }
 
@@ -363,7 +388,7 @@ function App() {
       className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
     >
       <header className="top-nav">
-        <a className="brand font-gothic" href="#/">
+        <a className="brand" href="#/">
           ICONS
         </a>
         <div className="nav-actions">
@@ -528,7 +553,7 @@ function App() {
           )}
 
           {route === '/tallas' && selectedProduct && (
-            <section className="preview section-reveal">
+            <section className="preview">
               <div className="preview-card">
                 <div className="preview-media">
                   <button
@@ -920,7 +945,7 @@ function App() {
                         />
                       </div>
                       <button className="ghost-button glass" type="button" onClick={handleSaveAvatar}>
-                        Guardar foto
+                        Modificar
                       </button>
                     </div>
                     <p className="form-hint">Usa una URL o sube una imagen cuadrada.</p>
@@ -1042,15 +1067,17 @@ function App() {
 
           {route === '/sobre' && (
             <section className="about-layout section-reveal">
-              <div className="about-hero glass">
+              <div className="about-intro glass">
+                <div>
+                  <h3>Laboratorio ICONS</h3>
+                  <p>
+                    Siluetas nocturnas creadas con precisión, enfoque editorial y
+                    acabados de atelier.
+                  </p>
+                </div>
                 <div className="image-panel image-aurora">
                   <span>Imagen IA</span>
                 </div>
-                <h3>Laboratorio ICONS</h3>
-                <p>
-                  Siluetas nocturnas creadas con precisión, enfoque editorial y
-                  acabados de atelier.
-                </p>
               </div>
               <div className="about-grid">
                 <div className="about-card glass">
