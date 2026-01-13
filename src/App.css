@@ -1609,44 +1609,64 @@ input:focus-visible {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: #06080f;
+  background-color: #070a12;
   background-image:
-    radial-gradient(1200px 900px at 15% 15%, rgba(36, 50, 88, 0.35), transparent 60%),
-    radial-gradient(1000px 700px at 85% 10%, rgba(22, 32, 60, 0.35), transparent 58%),
-    radial-gradient(800px 700px at 50% 85%, rgba(14, 20, 40, 0.4), transparent 62%),
-    linear-gradient(120deg, rgba(6, 8, 15, 0.95), rgba(10, 14, 26, 0.95));
-  animation: cosmic-drift 90s ease-in-out infinite alternate;
+    radial-gradient(1100px 800px at 18% 12%, rgba(40, 58, 104, 0.38), transparent 62%),
+    radial-gradient(900px 650px at 82% 8%, rgba(22, 34, 66, 0.38), transparent 60%),
+    radial-gradient(900px 750px at 50% 88%, rgba(16, 22, 42, 0.42), transparent 65%),
+    linear-gradient(120deg, rgba(7, 10, 18, 0.96), rgba(12, 16, 28, 0.96));
+  animation: cosmic-drift 110s ease-in-out infinite alternate;
 }
 
 .cosmic-background::before {
   content: '';
   position: absolute;
-  inset: -20%;
+  inset: -30%;
   background-image:
-    radial-gradient(900px 600px at 20% 60%, rgba(58, 74, 120, 0.08), transparent 65%),
-    radial-gradient(700px 500px at 80% 40%, rgba(30, 42, 78, 0.08), transparent 60%);
+    radial-gradient(900px 600px at 20% 60%, rgba(64, 82, 132, 0.1), transparent 66%),
+    radial-gradient(700px 520px at 80% 38%, rgba(32, 46, 86, 0.1), transparent 62%),
+    radial-gradient(600px 520px at 50% 20%, rgba(70, 90, 140, 0.06), transparent 62%);
   mix-blend-mode: screen;
-  opacity: 0.6;
-  animation: cosmic-sheen 120s linear infinite;
+  opacity: 0.55;
+  animation: cosmic-sheen 140s linear infinite;
+}
+
+.cosmic-background::after {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background-image:
+    radial-gradient(800px 600px at 30% 80%, rgba(18, 26, 48, 0.18), transparent 70%),
+    radial-gradient(700px 520px at 70% 30%, rgba(12, 18, 36, 0.18), transparent 68%);
+  opacity: 0.5;
+  animation: cosmic-sheen 180s linear infinite reverse;
 }
 
 /* Light mode: editorial mineral paper gradient, minimal motion */
 .theme-light .cosmic-background {
-  background-color: #f2f0ea;
+  background-color: #f4f1eb;
   background-image:
-    radial-gradient(1200px 800px at 18% 20%, rgba(210, 216, 222, 0.55), transparent 62%),
-    radial-gradient(1000px 700px at 82% 18%, rgba(208, 210, 205, 0.5), transparent 60%),
-    radial-gradient(900px 700px at 45% 85%, rgba(218, 210, 202, 0.55), transparent 62%),
-    linear-gradient(130deg, rgba(242, 240, 234, 0.95), rgba(230, 235, 238, 0.92));
-  animation: cosmic-drift 120s ease-in-out infinite alternate;
+    radial-gradient(1200px 800px at 20% 18%, rgba(204, 215, 224, 0.72), transparent 62%),
+    radial-gradient(1000px 700px at 80% 20%, rgba(209, 214, 206, 0.68), transparent 60%),
+    radial-gradient(900px 700px at 45% 85%, rgba(223, 214, 204, 0.7), transparent 64%),
+    linear-gradient(130deg, rgba(244, 241, 235, 0.98), rgba(228, 235, 239, 0.95));
+  animation: cosmic-drift 130s ease-in-out infinite alternate;
 }
 
 .theme-light .cosmic-background::before {
   background-image:
-    radial-gradient(1000px 700px at 25% 70%, rgba(200, 206, 214, 0.12), transparent 65%),
-    radial-gradient(900px 600px at 75% 35%, rgba(198, 203, 198, 0.12), transparent 60%);
+    radial-gradient(1000px 700px at 25% 70%, rgba(190, 200, 210, 0.2), transparent 66%),
+    radial-gradient(900px 600px at 75% 35%, rgba(192, 200, 194, 0.18), transparent 60%),
+    radial-gradient(700px 520px at 55% 10%, rgba(216, 210, 204, 0.16), transparent 60%);
   mix-blend-mode: multiply;
-  opacity: 0.5;
+  opacity: 0.65;
+}
+
+.theme-light .cosmic-background::after {
+  background-image:
+    radial-gradient(900px 650px at 30% 85%, rgba(208, 214, 220, 0.16), transparent 68%),
+    radial-gradient(800px 600px at 70% 35%, rgba(206, 212, 206, 0.16), transparent 65%);
+  opacity: 0.6;
 }
 
 @keyframes cosmic-drift {
@@ -1654,7 +1674,7 @@ input:focus-visible {
     background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
   }
   100% {
-    background-position: 0% 8%, 100% -6%, 50% 92%, 100% 100%;
+    background-position: 0% 10%, 100% -8%, 50% 90%, 100% 100%;
   }
 }
 
@@ -1669,7 +1689,8 @@ input:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .cosmic-background,
-  .cosmic-background::before {
+  .cosmic-background::before,
+  .cosmic-background::after {
     animation: none;
   }
 }
