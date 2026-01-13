@@ -1603,98 +1603,73 @@ input:focus-visible {
   }
 }
 
-/* Cosmic background (encapsulated, non-intrusive) */
+/* Cosmic background (encapsulated, minimal, non-intrusive) */
 .cosmic-background {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: #05070c;
+  background-color: #06080f;
   background-image:
-    radial-gradient(1200px 800px at 20% 10%, rgba(36, 60, 120, 0.25), transparent 60%),
-    radial-gradient(900px 600px at 80% 0%, rgba(24, 40, 90, 0.22), transparent 55%),
-    radial-gradient(700px 500px at 50% 80%, rgba(12, 20, 50, 0.3), transparent 60%);
-  animation: cosmic-nebula 80s ease-in-out infinite alternate;
+    radial-gradient(1200px 900px at 15% 15%, rgba(36, 50, 88, 0.35), transparent 60%),
+    radial-gradient(1000px 700px at 85% 10%, rgba(22, 32, 60, 0.35), transparent 58%),
+    radial-gradient(800px 700px at 50% 85%, rgba(14, 20, 40, 0.4), transparent 62%),
+    linear-gradient(120deg, rgba(6, 8, 15, 0.95), rgba(10, 14, 26, 0.95));
+  animation: cosmic-drift 90s ease-in-out infinite alternate;
 }
 
-.cosmic-background::before,
-.cosmic-background::after {
+.cosmic-background::before {
   content: '';
   position: absolute;
-  inset: -200%;
-  background-repeat: repeat;
-  opacity: 0.75;
-}
-
-/* High-density micro stars layer */
-.cosmic-background::before {
+  inset: -20%;
   background-image:
-    radial-gradient(1px 1px at 12px 18px, rgba(255, 255, 255, 0.6), transparent 2px),
-    radial-gradient(1px 1px at 32px 44px, rgba(255, 255, 255, 0.5), transparent 2px),
-    radial-gradient(1px 1px at 54px 8px, rgba(255, 255, 255, 0.4), transparent 2px),
-    radial-gradient(1px 1px at 78px 62px, rgba(255, 255, 255, 0.35), transparent 2px);
-  background-size: 120px 120px;
-  animation: cosmic-stars 140s linear infinite;
+    radial-gradient(900px 600px at 20% 60%, rgba(58, 74, 120, 0.08), transparent 65%),
+    radial-gradient(700px 500px at 80% 40%, rgba(30, 42, 78, 0.08), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: cosmic-sheen 120s linear infinite;
 }
 
-/* Distant dim stars for parallax depth */
-.cosmic-background::after {
-  background-image:
-    radial-gradient(1px 1px at 10px 30px, rgba(255, 255, 255, 0.25), transparent 2px),
-    radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.2), transparent 2px),
-    radial-gradient(1px 1px at 90px 10px, rgba(255, 255, 255, 0.18), transparent 2px);
-  background-size: 220px 220px;
-  animation: cosmic-stars 220s linear infinite reverse;
-}
-
-/* Light mode: editorial mineral paper gradient, no stars */
+/* Light mode: editorial mineral paper gradient, minimal motion */
 .theme-light .cosmic-background {
-  background-color: #f0ede7;
+  background-color: #f2f0ea;
   background-image:
-    radial-gradient(900px 700px at 20% 20%, rgba(210, 219, 226, 0.5), transparent 60%),
-    radial-gradient(1000px 700px at 80% 30%, rgba(207, 212, 205, 0.45), transparent 55%),
-    radial-gradient(1200px 900px at 50% 80%, rgba(220, 214, 206, 0.45), transparent 65%),
-    linear-gradient(120deg, rgba(235, 232, 226, 0.8), rgba(226, 231, 234, 0.8));
-  animation: cosmic-mineral 120s ease-in-out infinite alternate;
+    radial-gradient(1200px 800px at 18% 20%, rgba(210, 216, 222, 0.55), transparent 62%),
+    radial-gradient(1000px 700px at 82% 18%, rgba(208, 210, 205, 0.5), transparent 60%),
+    radial-gradient(900px 700px at 45% 85%, rgba(218, 210, 202, 0.55), transparent 62%),
+    linear-gradient(130deg, rgba(242, 240, 234, 0.95), rgba(230, 235, 238, 0.92));
+  animation: cosmic-drift 120s ease-in-out infinite alternate;
 }
 
-.theme-light .cosmic-background::before,
-.theme-light .cosmic-background::after {
-  opacity: 0;
-  animation: none;
+.theme-light .cosmic-background::before {
+  background-image:
+    radial-gradient(1000px 700px at 25% 70%, rgba(200, 206, 214, 0.12), transparent 65%),
+    radial-gradient(900px 600px at 75% 35%, rgba(198, 203, 198, 0.12), transparent 60%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
 }
 
-@keyframes cosmic-stars {
+@keyframes cosmic-drift {
   0% {
-    transform: translateY(0);
+    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
   }
   100% {
-    transform: translateY(35%);
+    background-position: 0% 8%, 100% -6%, 50% 92%, 100% 100%;
   }
 }
 
-@keyframes cosmic-nebula {
+@keyframes cosmic-sheen {
   0% {
-    background-position: 0% 0%, 100% 0%, 50% 100%;
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    background-position: 0% 12%, 100% -8%, 50% 88%;
-  }
-}
-
-@keyframes cosmic-mineral {
-  0% {
-    background-position: 0% 0%, 100% 10%, 50% 100%, 0% 0%;
-  }
-  100% {
-    background-position: 0% 6%, 100% 0%, 50% 94%, 100% 100%;
+    transform: translate3d(0, -6%, 0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cosmic-background,
-  .cosmic-background::before,
-  .cosmic-background::after {
+  .cosmic-background::before {
     animation: none;
   }
 }
