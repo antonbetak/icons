@@ -41,154 +41,113 @@
   --count-text: #f5f7f2;
 }
 
+/* =========================================================
+   STARFIELD CINEMÁTICO – ICONS
+   ========================================================= */
+
 .page::before,
+.page::after {
+  position: fixed; /* ← NO absolute */
+}
+
+
+
+/* =========================================================
+   CAPA 1 — MICRO ESTRELLAS (muchísimas)
+   ========================================================= */
+/* ===============================
+   DARK MODE – STARFIELD MINIMAL
+   =============================== */
+
+.page::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.9) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,0.5) 0 1px, transparent 2px);
+  background-size:
+    180px 180px,
+    320px 320px;
+  background-position:
+    0 0,
+    120px 200px;
+  opacity: 0.45;
+  animation: star-drift 80s linear infinite;
+}
+
 .page::after {
   content: '';
   position: fixed;
-  inset: -60%;
+  inset: -50%;
   pointer-events: none;
   z-index: 0;
-}
-
-.page::before {
   background:
-    radial-gradient(circle at 6% 12%, rgba(255, 255, 255, 0.95) 0 1px, transparent 2px),
-    radial-gradient(circle at 8% 18%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
-    radial-gradient(circle at 12% 46%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 18% 72%, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
-    radial-gradient(circle at 22% 24%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
-    radial-gradient(circle at 26% 54%, rgba(255, 255, 255, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 30% 86%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
-    radial-gradient(circle at 34% 12%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 38% 38%, rgba(255, 255, 255, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 42% 68%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
-    radial-gradient(circle at 46% 20%, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0 2px, transparent 3px),
-    radial-gradient(circle at 54% 84%, rgba(255, 255, 255, 0.8) 0 1px, transparent 2px),
-    radial-gradient(circle at 58% 30%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 62% 60%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
-    radial-gradient(circle at 66% 14%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
-    radial-gradient(circle at 70% 44%, rgba(255, 255, 255, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 74% 78%, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
-    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.8) 0 1px, transparent 2px),
-    radial-gradient(circle at 82% 52%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 86% 88%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
-    radial-gradient(circle at 90% 24%, rgba(255, 255, 255, 0.8) 0 1px, transparent 2px),
-    radial-gradient(circle at 94% 64%, rgba(255, 255, 255, 0.75) 0 1px, transparent 2px),
-    radial-gradient(circle at 10% 86%, rgba(255, 255, 255, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px),
-    radial-gradient(circle at 52% 24%, rgba(255, 255, 255, 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 64% 70%, rgba(255, 255, 255, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 76% 36%, rgba(255, 255, 255, 0.45) 0 1px, transparent 2px),
-    radial-gradient(circle at 88% 70%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px);
-  background-size: 100% 100%;
-  opacity: 1;
-  animation: starfield-drift 28s linear infinite, starfield-twinkle 6s ease-in-out infinite;
+    radial-gradient(circle, rgba(255,255,255,0.06) 0 1px, transparent 2px);
+  background-size: 520px 520px;
+  opacity: 0.25;
+  animation: star-drift-reverse 140s linear infinite;
 }
 
-.page::after {
-  background:
-    radial-gradient(circle at 85% 20%, rgba(0, 0, 0, 0.95) 0 120px, transparent 320px),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.18) 0 1px, transparent 2px),
-    radial-gradient(ellipse at 15% 65%, rgba(255, 255, 255, 0.45) 0 1px, transparent 40px),
-    radial-gradient(ellipse at 70% 40%, rgba(255, 255, 255, 0.35) 0 1px, transparent 36px),
-    radial-gradient(ellipse at 35% 25%, rgba(255, 255, 255, 0.3) 0 1px, transparent 30px);
-  background-size: 100% 100%, 140% 140%, 200% 200%, 220% 220%, 240% 240%;
-  background-position: 85% 20%, 10% 90%, 0% 0%, 100% 100%, 50% 50%;
-  opacity: 0.95;
-  animation: nebula-shift 14s ease-in-out infinite;
+@keyframes star-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-400px); }
 }
 
-.page.theme-light::before {
-  background:
-    radial-gradient(circle at 6% 12%, rgba(30, 40, 60, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 8% 18%, rgba(40, 55, 80, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 12% 46%, rgba(50, 65, 95, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 18% 72%, rgba(45, 60, 90, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 22% 24%, rgba(55, 70, 100, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 26% 54%, rgba(35, 50, 75, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 30% 86%, rgba(50, 65, 95, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 34% 12%, rgba(40, 55, 80, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 38% 38%, rgba(55, 70, 100, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 42% 68%, rgba(45, 60, 90, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 46% 20%, rgba(35, 50, 75, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 50% 50%, rgba(30, 45, 70, 0.55) 0 2px, transparent 3px),
-    radial-gradient(circle at 54% 84%, rgba(45, 60, 90, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 58% 30%, rgba(40, 55, 80, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 62% 60%, rgba(50, 65, 95, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 66% 14%, rgba(35, 50, 75, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 70% 44%, rgba(45, 60, 90, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 74% 78%, rgba(50, 65, 95, 0.65) 0 1px, transparent 2px),
-    radial-gradient(circle at 78% 18%, rgba(40, 55, 80, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 82% 52%, rgba(35, 50, 75, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 86% 88%, rgba(45, 60, 90, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle at 90% 24%, rgba(50, 65, 95, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 94% 64%, rgba(40, 55, 80, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 10% 86%, rgba(45, 60, 90, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 28% 30%, rgba(35, 50, 75, 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 52% 24%, rgba(40, 55, 80, 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 64% 70%, rgba(45, 60, 90, 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 76% 36%, rgba(35, 50, 75, 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 88% 70%, rgba(40, 55, 80, 0.55) 0 1px, transparent 2px);
-  opacity: 0.85;
+@keyframes star-drift-reverse {
+  from { transform: translateY(0); }
+  to { transform: translateY(300px); }
 }
 
+
+
+/* =========================================================
+   LIGHT MODE — MISMA ESTÉTICA
+   ========================================================= */
+/* ===============================
+   LIGHT MODE – EDITORIAL MOTION
+   =============================== */
+
+.page.theme-light::before,
 .page.theme-light::after {
+  display: none;
+}
+
+.page.theme-light {
   background:
-    radial-gradient(circle at 85% 20%, rgba(210, 220, 235, 0.95) 0 120px, transparent 320px),
-    radial-gradient(circle at 50% 50%, rgba(60, 75, 105, 0.3) 0 1px, transparent 2px),
-    radial-gradient(ellipse at 15% 65%, rgba(70, 85, 115, 0.35) 0 1px, transparent 40px),
-    radial-gradient(ellipse at 70% 40%, rgba(70, 85, 115, 0.3) 0 1px, transparent 36px),
-    radial-gradient(ellipse at 35% 25%, rgba(70, 85, 115, 0.28) 0 1px, transparent 30px);
-  opacity: 0.85;
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(0,0,0,0.04),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(0,0,0,0.035),
+      transparent 50%
+    ),
+    linear-gradient(
+      120deg,
+      #f5f7f2,
+      #f0f2ec
+    );
+  background-size: 200% 200%;
+  animation: paper-drift 30s ease-in-out infinite;
 }
 
-.page-home::before {
-  opacity: 0.95;
-}
-
-.page-home::after {
-  opacity: 0.85;
-}
-
-@keyframes starfield-drift {
+@keyframes paper-drift {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    background-position: 0% 0%;
   }
   50% {
-    transform: translate3d(-2%, -3%, 0) scale(1.02);
+    background-position: 6% 4%;
   }
   100% {
-    transform: translate3d(0, 0, 0) scale(1);
+    background-position: 0% 0%;
   }
 }
 
-@keyframes starfield-twinkle {
-  0% {
-    opacity: 0.65;
-  }
-  40% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 0.75;
-  }
-  100% {
-    opacity: 0.95;
-  }
-}
-
-@keyframes nebula-shift {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-  50% {
-    transform: translate3d(1%, 2%, 0) rotate(8deg) scale(1.03);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-}
 
 
 a:focus-visible,
