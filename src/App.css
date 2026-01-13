@@ -243,6 +243,17 @@ input:focus-visible {
   stroke-width: 1.6px;
 }
 
+.nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.65rem;
+}
+
 .theme-fab {
   position: fixed;
   right: 1.8rem;
@@ -894,6 +905,15 @@ input:focus-visible {
   }
 }
 
+@keyframes payment-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .payment-card,
 .auth-card {
   max-width: 520px;
@@ -904,6 +924,38 @@ input:focus-visible {
   background: var(--surface-soft);
   box-shadow: 0 24px 50px var(--shadow-strong);
   text-align: center;
+}
+
+.payment-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-card::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 120deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(120, 160, 255, 0.2),
+    rgba(255, 170, 210, 0.16),
+    rgba(255, 255, 255, 0.08)
+  );
+  opacity: 0.6;
+  animation: payment-glow 16s linear infinite;
+  pointer-events: none;
+}
+
+.page.theme-light .payment-card::before {
+  background: conic-gradient(
+    from 120deg,
+    rgba(19, 33, 30, 0.06),
+    rgba(108, 198, 168, 0.2),
+    rgba(255, 182, 142, 0.22),
+    rgba(19, 33, 30, 0.06)
+  );
+  opacity: 0.5;
 }
 
 .payment-steps {
@@ -1007,10 +1059,21 @@ input:focus-visible {
 .account-grid {
   display: grid;
   gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   margin-top: 2rem;
 }
 
-.account-section h4 {
+.account-panel {
+  padding: 1.8rem;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 20px 40px var(--shadow);
+  display: grid;
+  gap: 1rem;
+}
+
+.account-panel h4 {
   margin: 0 0 1rem;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
@@ -1041,6 +1104,10 @@ input:focus-visible {
   display: grid;
   gap: 0.6rem;
   margin-bottom: 1rem;
+}
+
+.account-actions {
+  text-align: center;
 }
 
 .auth-avatar {

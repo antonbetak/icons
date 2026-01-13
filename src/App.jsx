@@ -94,11 +94,11 @@ const pages = {
     title: 'Contacto',
     description: 'Agenda un fitting privado o consulta disponibilidad.',
   },
-  '/configuracion': {
-    label: 'Configuración',
-    title: 'Configuración',
-    description: 'Preferencias y datos guardados de tu cuenta.',
-  },
+}
+
+const configPage = {
+  title: 'Configuración',
+  description: 'Preferencias y datos guardados de tu cuenta.',
 }
 
 const sizes = ['S', 'M', 'L', 'XL', 'XXL']
@@ -188,6 +188,16 @@ function App() {
     setProfileAvatar(userProfile.avatar ?? '')
   }, [userProfile])
 
+  useEffect(() => {
+    const handleUnload = () => {
+      setUserProfile(null)
+      setAuthEmail('')
+      setAuthPassword('')
+    }
+    window.addEventListener('beforeunload', handleUnload)
+    return () => window.removeEventListener('beforeunload', handleUnload)
+  }, [])
+
   const navItems = useMemo(
     () =>
       Object.entries(pages).map(([path, page]) => ({
@@ -197,7 +207,7 @@ function App() {
     []
   )
 
-  const currentPage = pages[route] ?? pages['/']
+  const currentPage = pages[route] ?? configPage ?? pages['/']
 
   const handleSelectProduct = (product) => {
     setSelectedProduct(product)
@@ -328,6 +338,14 @@ function App() {
     setUserProfile((profile) => (profile ? { ...profile, avatar: profileAvatar } : profile))
   }
 
+  const handleLogout = () => {
+    setUserProfile(null)
+    setAuthEmail('')
+    setAuthPassword('')
+    setAuthError('')
+    window.location.hash = '#/login'
+  }
+
   return (
     <div
       className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
@@ -356,11 +374,19 @@ function App() {
               ))}
             </div>
           </div>
-          <a className="nav-icon glass" href="#/login" aria-label="Log in">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
-            </svg>
+          <a
+            className="nav-icon glass"
+            href={userProfile ? '#/configuracion' : '#/login'}
+            aria-label={userProfile ? 'Configuración' : 'Log in'}
+          >
+            {userProfile ? (
+              <span className="nav-avatar">{userProfile.email.charAt(0).toUpperCase()}</span>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
+              </svg>
+            )}
           </a>
           <a className="nav-icon glass" href="#/carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -847,13 +873,13 @@ function App() {
                 <p>Administra tus datos predeterminados y perfil.</p>
 
                 <div className="account-grid">
-                  <div className="account-section">
+                  <div className="account-panel glass">
                     <h4>Foto de perfil</h4>
                     <div className="account-avatar">
                       {profileAvatar ? (
                         <img src={profileAvatar} alt="Avatar" />
                       ) : (
-                        <span>Sin foto</span>
+                        <span>{(userProfile?.email?.charAt(0) ?? 'U').toUpperCase()}</span>
                       )}
                     </div>
                     <div className="payment-grid">
@@ -869,7 +895,7 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="account-section">
+                  <div className="account-panel glass">
                     <h4>Direcciones predeterminadas</h4>
                     <div className="account-list">
                       {(userProfile?.addresses ?? []).map((address) => (
@@ -905,7 +931,7 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="account-section">
+                  <div className="account-panel glass">
                     <h4>Tarjetas predeterminadas</h4>
                     <div className="account-list">
                       {(userProfile?.cards ?? []).map((card) => (
@@ -939,6 +965,14 @@ function App() {
                         Añadir
                       </button>
                     </div>
+                  </div>
+
+                  <div className="account-panel glass account-actions">
+                    <h4>Sesión</h4>
+                    <p className="muted-text">Cierra sesión para proteger tu cuenta.</p>
+                    <button className="hero-cta glass" type="button" onClick={handleLogout}>
+                      Cerrar sesión
+                    </button>
                   </div>
                 </div>
               </div>
