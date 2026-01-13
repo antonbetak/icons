@@ -228,7 +228,7 @@ function App() {
       className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
     >
       <header className="top-nav">
-        <a className="brand" href="#/">
+        <a className="brand font-gothic" href="#/">
           ICONS
         </a>
         <div className="nav-actions">
