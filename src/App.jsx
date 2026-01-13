@@ -387,6 +387,7 @@ function App() {
     <div
       className={`page ${route === '/' ? 'page-home' : ''} ${activeTheme === 'light' ? 'theme-light' : ''}`}
     >
+      <div className="cosmic-background" aria-hidden="true" />
       <header className="top-nav">
         <a className="brand" href="#/">
           ICONS
