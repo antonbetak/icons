@@ -225,8 +225,13 @@ input:focus-visible {
   inset: -40%;
   background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
   transform: translateX(-60%);
-  animation: glass-shimmer 6s ease-in-out infinite;
+  animation: none;
   pointer-events: none;
+  opacity: 0.18;
+}
+
+.page:not(.theme-light) .glass::after {
+  opacity: 0.12;
 }
 
 .page:not(.theme-light) .glass::after {
@@ -251,6 +256,14 @@ input:focus-visible {
   transform: translateY(-50%);
 }
 
+<<<<<<< ours
+=======
+.page:not(.theme-light) .gallery-nav.glass:hover,
+.page:not(.theme-light) .gallery-nav.glass:focus-visible {
+  transform: translateY(-50%);
+}
+
+>>>>>>> theirs
 @keyframes glass-shimmer {
   0% {
     transform: translateX(-60%);
@@ -1907,6 +1920,7 @@ input:focus-visible {
   0% {
     background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
     transform: scale(1);
+<<<<<<< ours
   }
   100% {
     background-position: 8% 5%, 94% 5%, 52% 90%, 4% 4%;
@@ -1928,6 +1942,29 @@ input:focus-visible {
 @keyframes editorial-sheen-light {
   0% {
     opacity: 0;
+=======
+  }
+  100% {
+    background-position: 8% 5%, 94% 5%, 52% 90%, 4% 4%;
+    transform: scale(1.008);
+  }
+}
+
+@keyframes editorial-sheen {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 0.78;
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes editorial-sheen-light {
+  0% {
+    opacity: 0;
+>>>>>>> theirs
     transform: translate3d(0, 10px, 0);
   }
   100% {
