@@ -30,3 +30,7 @@ button {
 input {
   font-family: inherit;
 }
+
+.font-gothic {
+  font-family: 'Taylor Gothic', 'Helvetica Neue', 'Montserrat', Arial, sans-serif;
+}

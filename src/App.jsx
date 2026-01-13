@@ -118,6 +118,9 @@ function App() {
   const [selectedAngle, setSelectedAngle] = useState('A')
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
+  const [paymentStep, setPaymentStep] = useState(1)
+  const [addressOption, setAddressOption] = useState('predeterminada')
+  const [shippingOption, setShippingOption] = useState('7')
   const [cartItems, setCartItems] = useState([])
   const [cartNotice, setCartNotice] = useState('')
   const cartTotal = cartItems.reduce((sum, item) => {
@@ -210,6 +213,14 @@ function App() {
 
   const handlePrevGallery = () => {
     setGalleryIndex((current) => (current - 1 + galleryLabels.length) % galleryLabels.length)
+  }
+
+  const handleNextPaymentStep = () => {
+    setPaymentStep((step) => Math.min(step + 1, 3))
+  }
+
+  const handlePrevPaymentStep = () => {
+    setPaymentStep((step) => Math.max(step - 1, 1))
   }
 
   return (
@@ -546,17 +557,106 @@ function App() {
           {route === '/pago' && (
             <section className="payment">
               <div className="payment-card">
-                <h3>Solicitud de tarjeta</h3>
-                <p>Completa los datos para continuar con el pago.</p>
-                <div className="payment-grid">
-                  <input type="text" placeholder="Nombre en la tarjeta" />
-                  <input type="text" placeholder="Número de tarjeta" />
-                  <input type="text" placeholder="MM/AA" />
-                  <input type="text" placeholder="CVC" />
+                <div className="payment-steps">
+                  <span className={paymentStep >= 1 ? 'is-active' : ''}>Dirección</span>
+                  <span className={paymentStep >= 2 ? 'is-active' : ''}>Entrega</span>
+                  <span className={paymentStep >= 3 ? 'is-active' : ''}>Pago</span>
                 </div>
-                <button className="hero-cta glass" type="button">
-                  Confirmar
-                </button>
+
+                {paymentStep === 1 && (
+                  <div className="payment-section">
+                    <h3>Dirección de entrega</h3>
+                    <p>Elige una dirección predeterminada o agrega una nueva.</p>
+                    <div className="payment-options">
+                      <button
+                        className={`ghost-button glass ${
+                          addressOption === 'predeterminada' ? 'is-selected' : ''
+                        }`}
+                        type="button"
+                        onClick={() => setAddressOption('predeterminada')}
+                      >
+                        Predeterminada
+                      </button>
+                      <button
+                        className={`ghost-button glass ${
+                          addressOption === 'nueva' ? 'is-selected' : ''
+                        }`}
+                        type="button"
+                        onClick={() => setAddressOption('nueva')}
+                      >
+                        Nueva dirección
+                      </button>
+                    </div>
+                    {addressOption === 'nueva' && (
+                      <div className="payment-grid">
+                        <input type="text" placeholder="Nombre completo" />
+                        <input type="text" placeholder="Calle y número" />
+                        <input type="text" placeholder="Ciudad" />
+                        <input type="text" placeholder="Código postal" />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {paymentStep === 2 && (
+                  <div className="payment-section">
+                    <h3>Día de entrega</h3>
+                    <p>Selecciona el tiempo estimado de entrega.</p>
+                    <div className="payment-options">
+                      <button
+                        className={`ghost-button glass ${
+                          shippingOption === '7' ? 'is-selected' : ''
+                        }`}
+                        type="button"
+                        onClick={() => setShippingOption('7')}
+                      >
+                        7 días hábiles
+                      </button>
+                      <button
+                        className={`ghost-button glass ${
+                          shippingOption === '10' ? 'is-selected' : ''
+                        }`}
+                        type="button"
+                        onClick={() => setShippingOption('10')}
+                      >
+                        10 días hábiles
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {paymentStep === 3 && (
+                  <div className="payment-section">
+                    <h3>Datos de tarjeta</h3>
+                    <p>Completa los datos para finalizar el pago.</p>
+                    <div className="payment-grid">
+                      <input type="text" placeholder="Nombre en la tarjeta" />
+                      <input type="text" placeholder="Número de tarjeta" />
+                      <input type="text" placeholder="MM/AA" />
+                      <input type="text" placeholder="CVC" />
+                    </div>
+                  </div>
+                )}
+
+                <div className="payment-actions">
+                  <button
+                    className="ghost-button glass"
+                    type="button"
+                    onClick={handlePrevPaymentStep}
+                    disabled={paymentStep === 1}
+                  >
+                    Volver
+                  </button>
+                  {paymentStep < 3 ? (
+                    <button className="hero-cta glass" type="button" onClick={handleNextPaymentStep}>
+                      Continuar
+                    </button>
+                  ) : (
+                    <button className="hero-cta glass" type="button">
+                      Confirmar
+                    </button>
+                  )}
+                </div>
               </div>
             </section>
           )}
