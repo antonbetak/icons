@@ -282,7 +282,7 @@ function App() {
 
       {route === '/' ? (
         <main className="hero">
-          <h1 className="hero-title">ICONS</h1>
+          <h1 className="hero-title font-gothic">ICONS</h1>
           {/* TODO: ajustar tipografía del título principal "ICONS" */}
           <a className="hero-cta glass" href="#/tienda">
             Comprar ahora
