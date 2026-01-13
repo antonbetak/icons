@@ -196,6 +196,7 @@ function App() {
     }
   })
   const [adminNotice, setAdminNotice] = useState('')
+  const [activeAdminTab, setActiveAdminTab] = useState('dashboard')
   const [activeAdminCategory, setActiveAdminCategory] = useState('playeras')
   const [editingProductId, setEditingProductId] = useState(null)
   const [newProduct, setNewProduct] = useState({
@@ -562,14 +563,22 @@ function App() {
     }))
     const totalViews = metrics.reduce((sum, item) => sum + item.views, 0)
     const totalCartAdds = metrics.reduce((sum, item) => sum + item.cartAdds, 0)
+    const avgViews = metrics.length ? totalViews / metrics.length : 0
+    const avgCartAdds = metrics.length ? totalCartAdds / metrics.length : 0
+    const conversionRate = totalViews ? (totalCartAdds / totalViews) * 100 : 0
     const topViewed = [...metrics].sort((a, b) => b.views - a.views)[0]
     const topCart = [...metrics].sort((a, b) => b.cartAdds - a.cartAdds)[0]
+    const lowEngagement = metrics.filter((item) => item.views === 0 && item.cartAdds === 0)
     return {
       totalViews,
       totalCartAdds,
       totalProducts: productList.length,
+      avgViews,
+      avgCartAdds,
+      conversionRate,
       topViewed,
       topCart,
+      lowEngagement,
     }
   }, [interactions, productList])
 
@@ -1231,7 +1240,7 @@ function App() {
           )}
 
           {route === '/admin' && (
-            <section className="admin section-reveal">
+            <section className="admin">
               {userProfile?.role !== 'admin' ? (
                 <div className="admin-card glass">
                   <h3>Acceso restringido</h3>
@@ -1248,221 +1257,278 @@ function App() {
                       Cerrar sesión admin
                     </button>
                   </div>
-                  <div className="admin-grid">
-                    <div className="admin-card glass">
-                      <h4>Indicadores clave</h4>
-                      <div className="admin-stats">
-                        <div className="admin-stat">
-                          <span>Total productos</span>
-                          <strong>{adminStats.totalProducts}</strong>
-                        </div>
-                        <div className="admin-stat">
-                          <span>Vistas registradas</span>
-                          <strong>{adminStats.totalViews}</strong>
-                        </div>
-                        <div className="admin-stat">
-                          <span>Añadidos al carrito</span>
-                          <strong>{adminStats.totalCartAdds}</strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="admin-card glass">
-                      <h4>Más interacción</h4>
-                      <div className="admin-highlight">
-                        <div>
-                          <p className="muted-text">Producto con más vistas</p>
-                          <strong>{adminStats.topViewed?.name ?? 'Sin datos'}</strong>
-                          <span>{adminStats.topViewed?.views ?? 0} vistas</span>
-                        </div>
-                        <div>
-                          <p className="muted-text">Producto con más carrito</p>
-                          <strong>{adminStats.topCart?.name ?? 'Sin datos'}</strong>
-                          <span>{adminStats.topCart?.cartAdds ?? 0} acciones</span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="admin-main-tabs">
+                    <button
+                      className={`ghost-button glass ${activeAdminTab === 'dashboard' ? 'is-selected' : ''}`}
+                      type="button"
+                      onClick={() => setActiveAdminTab('dashboard')}
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      className={`ghost-button glass ${activeAdminTab === 'inventory' ? 'is-selected' : ''}`}
+                      type="button"
+                      onClick={() => setActiveAdminTab('inventory')}
+                    >
+                      Actualizaciones &amp; productos
+                    </button>
                   </div>
 
-                  <div className="admin-card glass admin-form">
-                    <div className="admin-form-header">
-                      <div>
-                        <h4>Agregar nuevo producto</h4>
-                        <p className="muted-text">Añade piezas exclusivas sin saturar el inventario.</p>
+                  {activeAdminTab === 'dashboard' ? (
+                    <>
+                      <div className="admin-grid">
+                        <div className="admin-card glass">
+                          <h4>Indicadores clave</h4>
+                          <div className="admin-stats">
+                            <div className="admin-stat">
+                              <span>Total productos</span>
+                              <strong>{adminStats.totalProducts}</strong>
+                            </div>
+                            <div className="admin-stat">
+                              <span>Vistas registradas</span>
+                              <strong>{adminStats.totalViews}</strong>
+                            </div>
+                            <div className="admin-stat">
+                              <span>Añadidos al carrito</span>
+                              <strong>{adminStats.totalCartAdds}</strong>
+                            </div>
+                            <div className="admin-stat">
+                              <span>Conversión a carrito</span>
+                              <strong>{adminStats.conversionRate.toFixed(1)}%</strong>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="admin-card glass">
+                          <h4>Rendimiento promedio</h4>
+                          <div className="admin-stats">
+                            <div className="admin-stat">
+                              <span>Vistas por producto</span>
+                              <strong>{adminStats.avgViews.toFixed(1)}</strong>
+                            </div>
+                            <div className="admin-stat">
+                              <span>Carrito por producto</span>
+                              <strong>{adminStats.avgCartAdds.toFixed(1)}</strong>
+                            </div>
+                            <div className="admin-stat">
+                              <span>Productos sin interacción</span>
+                              <strong>{adminStats.lowEngagement.length}</strong>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <button className="ghost-button glass" type="button" onClick={handleAddProduct}>
-                        Agregar producto
-                      </button>
-                    </div>
-                    <div className="admin-form-grid">
-                      <input
-                        type="text"
-                        placeholder="Nombre"
-                        value={newProduct.name}
-                        onChange={(event) => setNewProduct((current) => ({ ...current, name: event.target.value }))}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Precio (ej. $190)"
-                        value={newProduct.price}
-                        onChange={(event) => setNewProduct((current) => ({ ...current, price: event.target.value }))}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Descripción"
-                        value={newProduct.desc}
-                        onChange={(event) => setNewProduct((current) => ({ ...current, desc: event.target.value }))}
-                      />
-                      <select
-                        value={newProduct.category}
-                        onChange={(event) =>
-                          setNewProduct((current) => ({ ...current, category: event.target.value }))
-                        }
-                      >
-                        <option value="playeras">Playeras</option>
-                        <option value="gorras">Gorras</option>
-                      </select>
-                      <select
-                        value={newProduct.tone}
-                        onChange={(event) => setNewProduct((current) => ({ ...current, tone: event.target.value }))}
-                      >
-                        <option value="image-aurora">Aurora</option>
-                        <option value="image-vanta">Vanta</option>
-                        <option value="image-orbit">Orbit</option>
-                        <option value="image-mirror">Mirror</option>
-                      </select>
-                      <input
-                        type="text"
-                        placeholder="Tallas (separadas por coma)"
-                        value={newProduct.sizes}
-                        onChange={(event) => setNewProduct((current) => ({ ...current, sizes: event.target.value }))}
-                      />
-                    </div>
-                    {adminNotice && <p className="form-hint">{adminNotice}</p>}
-                  </div>
+                      <div className="admin-card glass">
+                        <h4>Más interacción</h4>
+                        <div className="admin-highlight">
+                          <div>
+                            <p className="muted-text">Producto con más vistas</p>
+                            <strong>{adminStats.topViewed?.name ?? 'Sin datos'}</strong>
+                            <span>{adminStats.topViewed?.views ?? 0} vistas</span>
+                          </div>
+                          <div>
+                            <p className="muted-text">Producto con más carrito</p>
+                            <strong>{adminStats.topCart?.name ?? 'Sin datos'}</strong>
+                            <span>{adminStats.topCart?.cartAdds ?? 0} acciones</span>
+                          </div>
+                          <div>
+                            <p className="muted-text">Baja interacción</p>
+                            <strong>
+                              {adminStats.lowEngagement[0]?.name ?? 'Sin alertas'}
+                            </strong>
+                            <span>
+                              {adminStats.lowEngagement.length
+                                ? `${adminStats.lowEngagement.length} piezas sin movimiento`
+                                : 'Todo el catálogo tiene actividad'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="admin-card glass admin-form">
+                        <div className="admin-form-header">
+                          <div>
+                            <h4>Agregar nuevo producto</h4>
+                            <p className="muted-text">Añade piezas exclusivas sin saturar el inventario.</p>
+                          </div>
+                          <button className="ghost-button glass" type="button" onClick={handleAddProduct}>
+                            Agregar producto
+                          </button>
+                        </div>
+                        <div className="admin-form-grid">
+                          <input
+                            type="text"
+                            placeholder="Nombre"
+                            value={newProduct.name}
+                            onChange={(event) => setNewProduct((current) => ({ ...current, name: event.target.value }))}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Precio (ej. $190)"
+                            value={newProduct.price}
+                            onChange={(event) =>
+                              setNewProduct((current) => ({ ...current, price: event.target.value }))
+                            }
+                          />
+                          <input
+                            type="text"
+                            placeholder="Descripción"
+                            value={newProduct.desc}
+                            onChange={(event) => setNewProduct((current) => ({ ...current, desc: event.target.value }))}
+                          />
+                          <select
+                            value={newProduct.category}
+                            onChange={(event) =>
+                              setNewProduct((current) => ({ ...current, category: event.target.value }))
+                            }
+                          >
+                            <option value="playeras">Playeras</option>
+                            <option value="gorras">Gorras</option>
+                          </select>
+                          <select
+                            value={newProduct.tone}
+                            onChange={(event) => setNewProduct((current) => ({ ...current, tone: event.target.value }))}
+                          >
+                            <option value="image-aurora">Aurora</option>
+                            <option value="image-vanta">Vanta</option>
+                            <option value="image-orbit">Orbit</option>
+                            <option value="image-mirror">Mirror</option>
+                          </select>
+                          <input
+                            type="text"
+                            placeholder="Tallas (separadas por coma)"
+                            value={newProduct.sizes}
+                            onChange={(event) => setNewProduct((current) => ({ ...current, sizes: event.target.value }))}
+                          />
+                        </div>
+                        {adminNotice && <p className="form-hint">{adminNotice}</p>}
+                      </div>
 
-                  <div className="admin-card glass">
-                    <div className="admin-list-header">
-                      <div>
-                        <h4>Inventario editable</h4>
-                        <p className="muted-text">Gestiona piezas por categoría sin perder claridad.</p>
-                      </div>
-                      <div className="admin-tabs">
-                        <button
-                          className={`ghost-button glass ${activeAdminCategory === 'playeras' ? 'is-selected' : ''}`}
-                          type="button"
-                          onClick={() => setActiveAdminCategory('playeras')}
-                        >
-                          Playeras
-                        </button>
-                        <button
-                          className={`ghost-button glass ${activeAdminCategory === 'gorras' ? 'is-selected' : ''}`}
-                          type="button"
-                          onClick={() => setActiveAdminCategory('gorras')}
-                        >
-                          Gorras
-                        </button>
-                      </div>
-                    </div>
-                    <div className="admin-list">
-                      {adminCatalog[activeAdminCategory].map((item) => (
-                        <div className="admin-item" key={item.id}>
-                          <div className="admin-item-info">
-                            <div>
-                              <h5>{item.name}</h5>
-                              <p className="muted-text">{item.desc}</p>
-                            </div>
-                            <div className="admin-item-meta">
-                              <span>{item.price}</span>
-                              <span>{item.category === 'gorras' ? 'Gorra' : 'Playera'}</span>
-                              <span>{(item.sizes ?? []).join(', ')}</span>
-                            </div>
+                      <div className="admin-card glass">
+                        <div className="admin-list-header">
+                          <div>
+                            <h4>Inventario editable</h4>
+                            <p className="muted-text">Gestiona piezas por categoría sin perder claridad.</p>
                           </div>
-                          <div className="admin-item-actions">
+                          <div className="admin-tabs">
                             <button
-                              className="ghost-button glass"
+                              className={`ghost-button glass ${activeAdminCategory === 'playeras' ? 'is-selected' : ''}`}
                               type="button"
-                              onClick={() => handleEditProduct(item)}
+                              onClick={() => setActiveAdminCategory('playeras')}
                             >
-                              Editar
+                              Playeras
                             </button>
                             <button
-                              className="ghost-button glass admin-remove"
+                              className={`ghost-button glass ${activeAdminCategory === 'gorras' ? 'is-selected' : ''}`}
                               type="button"
-                              onClick={() => handleRemoveProduct(item.id)}
+                              onClick={() => setActiveAdminCategory('gorras')}
                             >
-                              Eliminar
+                              Gorras
                             </button>
                           </div>
-                          {editingProductId === item.id && adminDraft && (
-                            <div className="admin-editor">
-                              <div className="admin-form-grid">
-                                <input
-                                  type="text"
-                                  value={adminDraft.name}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, name: event.target.value }))
-                                  }
-                                />
-                                <input
-                                  type="text"
-                                  value={adminDraft.price}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, price: event.target.value }))
-                                  }
-                                />
-                                <input
-                                  type="text"
-                                  value={adminDraft.desc}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, desc: event.target.value }))
-                                  }
-                                />
-                                <select
-                                  value={adminDraft.category}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, category: event.target.value }))
-                                  }
-                                >
-                                  <option value="playeras">Playeras</option>
-                                  <option value="gorras">Gorras</option>
-                                </select>
-                                <select
-                                  value={adminDraft.tone}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, tone: event.target.value }))
-                                  }
-                                >
-                                  <option value="image-aurora">Aurora</option>
-                                  <option value="image-vanta">Vanta</option>
-                                  <option value="image-orbit">Orbit</option>
-                                  <option value="image-mirror">Mirror</option>
-                                </select>
-                                <input
-                                  type="text"
-                                  value={adminDraft.sizes}
-                                  onChange={(event) =>
-                                    setAdminDraft((current) => ({ ...current, sizes: event.target.value }))
-                                  }
-                                />
+                        </div>
+                        <div className="admin-list">
+                          {adminCatalog[activeAdminCategory].map((item) => (
+                            <div className="admin-item" key={item.id}>
+                              <div className="admin-item-info">
+                                <div>
+                                  <h5>{item.name}</h5>
+                                  <p className="muted-text">{item.desc}</p>
+                                </div>
+                                <div className="admin-item-meta">
+                                  <span>{item.price}</span>
+                                  <span>{item.category === 'gorras' ? 'Gorra' : 'Playera'}</span>
+                                  <span>{(item.sizes ?? []).join(', ')}</span>
+                                </div>
                               </div>
-                              <div className="admin-editor-actions">
-                                <button className="ghost-button glass" type="button" onClick={handleCancelEdit}>
-                                  Cancelar
+                              <div className="admin-item-actions">
+                                <button
+                                  className="ghost-button glass"
+                                  type="button"
+                                  onClick={() => handleEditProduct(item)}
+                                >
+                                  Editar
                                 </button>
                                 <button
-                                  className="hero-cta glass"
+                                  className="ghost-button glass admin-remove"
                                   type="button"
-                                  onClick={() => handleSaveEdit(item.id)}
+                                  onClick={() => handleRemoveProduct(item.id)}
                                 >
-                                  Guardar cambios
+                                  Eliminar
                                 </button>
                               </div>
+                              {editingProductId === item.id && adminDraft && (
+                                <div className="admin-editor">
+                                  <div className="admin-form-grid">
+                                    <input
+                                      type="text"
+                                      value={adminDraft.name}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, name: event.target.value }))
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      value={adminDraft.price}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, price: event.target.value }))
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      value={adminDraft.desc}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, desc: event.target.value }))
+                                      }
+                                    />
+                                    <select
+                                      value={adminDraft.category}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, category: event.target.value }))
+                                      }
+                                    >
+                                      <option value="playeras">Playeras</option>
+                                      <option value="gorras">Gorras</option>
+                                    </select>
+                                    <select
+                                      value={adminDraft.tone}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, tone: event.target.value }))
+                                      }
+                                    >
+                                      <option value="image-aurora">Aurora</option>
+                                      <option value="image-vanta">Vanta</option>
+                                      <option value="image-orbit">Orbit</option>
+                                      <option value="image-mirror">Mirror</option>
+                                    </select>
+                                    <input
+                                      type="text"
+                                      value={adminDraft.sizes}
+                                      onChange={(event) =>
+                                        setAdminDraft((current) => ({ ...current, sizes: event.target.value }))
+                                      }
+                                    />
+                                  </div>
+                                  <div className="admin-editor-actions">
+                                    <button className="ghost-button glass" type="button" onClick={handleCancelEdit}>
+                                      Cancelar
+                                    </button>
+                                    <button
+                                      className="hero-cta glass"
+                                      type="button"
+                                      onClick={() => handleSaveEdit(item.id)}
+                                    >
+                                      Guardar cambios
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          )}
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </section>
