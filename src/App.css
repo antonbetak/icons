@@ -246,6 +246,11 @@ input:focus-visible {
   transform: none;
 }
 
+.gallery-nav.glass:hover,
+.gallery-nav.glass:focus-visible {
+  transform: translateY(-50%);
+}
+
 @keyframes glass-shimmer {
   0% {
     transform: translateX(-60%);
