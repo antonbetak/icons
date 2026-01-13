@@ -367,6 +367,11 @@ function App() {
     setPaymentStep((step) => Math.max(step - 1, 1))
   }
 
+  const handleConfirmPayment = () => {
+    setCartItems([])
+    setPaymentStep(1)
+  }
+
   const handleLogin = () => {
     if (authEmail === adminUser.email && authPassword === adminUser.password) {
       setUserProfile(adminUser)
@@ -1082,7 +1087,7 @@ function App() {
                           Continuar
                         </button>
                       ) : (
-                        <button className="hero-cta glass" type="button">
+                        <button className="hero-cta glass" type="button" onClick={handleConfirmPayment}>
                           Confirmar
                         </button>
                       )}
