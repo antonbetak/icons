@@ -1603,7 +1603,7 @@ input:focus-visible {
   }
 }
 
-/* Editorial animated background (encapsulated, minimal, non-intrusive) */
+/* Editorial animated background (encapsulated, premium, visible) */
 .page:has(.cosmic-background)::before,
 .page:has(.cosmic-background)::after {
   display: none;
@@ -1614,13 +1614,13 @@ input:focus-visible {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: #05070d;
+  background-color: #0a0f1b;
   background-image:
-    radial-gradient(1000px 800px at 12% 10%, rgba(34, 52, 96, 0.55), transparent 65%),
-    radial-gradient(1000px 850px at 88% 18%, rgba(18, 32, 64, 0.55), transparent 63%),
-    radial-gradient(900px 800px at 50% 90%, rgba(10, 18, 34, 0.6), transparent 68%),
-    linear-gradient(140deg, rgba(5, 7, 13, 0.98), rgba(12, 16, 28, 0.98));
-  animation: editorial-drift 20s ease-in-out infinite alternate;
+    radial-gradient(1300px 980px at 12% 18%, rgba(74, 102, 170, 0.72), transparent 70%),
+    radial-gradient(1200px 980px at 88% 20%, rgba(46, 68, 130, 0.68), transparent 68%),
+    radial-gradient(1050px 980px at 50% 90%, rgba(22, 34, 70, 0.72), transparent 72%),
+    linear-gradient(150deg, rgba(8, 12, 22, 0.99), rgba(16, 22, 36, 0.99));
+  animation: editorial-loom 16s ease-in-out infinite alternate;
 }
 
 .cosmic-background::before {
@@ -1628,11 +1628,11 @@ input:focus-visible {
   position: absolute;
   inset: -20%;
   background-image:
-    radial-gradient(720px 560px at 18% 70%, rgba(60, 82, 134, 0.28), transparent 70%),
-    radial-gradient(640px 520px at 82% 30%, rgba(30, 46, 90, 0.26), transparent 66%);
+    radial-gradient(900px 720px at 18% 72%, rgba(108, 136, 198, 0.5), transparent 72%),
+    radial-gradient(820px 660px at 82% 32%, rgba(64, 88, 148, 0.46), transparent 68%);
   mix-blend-mode: screen;
-  opacity: 0.65;
-  animation: editorial-sheen 18s linear infinite;
+  opacity: 0.85;
+  animation: editorial-sheen-rapid 14s linear infinite;
 }
 
 .cosmic-background::after {
@@ -1640,144 +1640,59 @@ input:focus-visible {
   position: absolute;
   inset: -18%;
   background-image:
-    linear-gradient(90deg, rgba(20, 30, 52, 0.32), rgba(8, 12, 24, 0.05), rgba(20, 30, 52, 0.32));
-  opacity: 0.5;
-  animation: editorial-band 16s ease-in-out infinite;
+    linear-gradient(90deg, rgba(44, 62, 104, 0.6), rgba(12, 18, 32, 0.08), rgba(44, 62, 104, 0.6));
+  opacity: 0.75;
+  animation: editorial-band-rapid 12s ease-in-out infinite;
 }
 
-/* Light mode: editorial mineral paper gradient, minimal motion */
 .theme-light .cosmic-background {
-  background-color: #f7f3ee;
+  background-color: #f4f1ec;
   background-image:
-    radial-gradient(1100px 850px at 15% 18%, rgba(204, 216, 228, 0.98), transparent 66%),
-    radial-gradient(1000px 800px at 85% 22%, rgba(214, 218, 208, 0.95), transparent 64%),
-    radial-gradient(900px 760px at 50% 88%, rgba(232, 220, 206, 0.98), transparent 68%),
-    linear-gradient(140deg, rgba(247, 243, 238, 0.99), rgba(230, 238, 244, 0.97));
-  animation: editorial-drift 20s ease-in-out infinite alternate;
+    radial-gradient(1300px 980px at 14% 18%, rgba(188, 212, 236, 1), transparent 70%),
+    radial-gradient(1200px 980px at 86% 22%, rgba(216, 224, 210, 0.98), transparent 68%),
+    radial-gradient(1050px 980px at 50% 88%, rgba(238, 226, 210, 1), transparent 72%),
+    linear-gradient(150deg, rgba(248, 243, 238, 1), rgba(230, 238, 244, 0.98));
+  animation: editorial-loom 16s ease-in-out infinite alternate;
 }
 
 .theme-light .cosmic-background::before {
   background-image:
-    radial-gradient(950px 720px at 20% 72%, rgba(190, 202, 214, 0.42), transparent 70%),
-    radial-gradient(820px 620px at 80% 32%, rgba(196, 204, 198, 0.38), transparent 66%);
+    radial-gradient(980px 760px at 20% 72%, rgba(176, 200, 224, 0.7), transparent 72%),
+    radial-gradient(860px 680px at 80% 32%, rgba(198, 208, 198, 0.65), transparent 68%);
   mix-blend-mode: multiply;
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
 .theme-light .cosmic-background::after {
   background-image:
-    linear-gradient(90deg, rgba(216, 224, 232, 0.7), rgba(238, 241, 244, 0.25), rgba(216, 224, 232, 0.7));
-  opacity: 0.6;
-}
-
-@keyframes editorial-drift {
-  0% {
-    background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
-  }
-  100% {
-    background-position: 0% 18%, 100% -16%, 50% 86%, 100% 100%;
-  }
-}
-
-@keyframes editorial-sheen {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, -10%, 0);
-  }
-}
-
-@keyframes editorial-band {
-  0% {
-    transform: translate3d(-12%, 0, 0);
-  }
-  100% {
-    transform: translate3d(12%, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cosmic-background,
-  .cosmic-background::before,
-  .cosmic-background::after {
-    animation: none;
-  }
-}
-
-/* Editorial premium override for visible, elegant motion */
-.cosmic-background {
-  background-color: #0b0f1a;
-  background-image:
-    radial-gradient(1200px 900px at 10% 15%, rgba(66, 90, 150, 0.6), transparent 68%),
-    radial-gradient(1100px 900px at 90% 20%, rgba(40, 58, 110, 0.55), transparent 66%),
-    radial-gradient(1000px 900px at 50% 90%, rgba(20, 30, 60, 0.6), transparent 70%),
-    linear-gradient(145deg, rgba(8, 12, 22, 0.98), rgba(14, 18, 32, 0.98));
-  animation: editorial-flow 18s ease-in-out infinite alternate;
-}
-
-.cosmic-background::before {
-  background-image:
-    radial-gradient(800px 620px at 18% 70%, rgba(86, 110, 170, 0.35), transparent 70%),
-    radial-gradient(720px 580px at 82% 30%, rgba(48, 72, 120, 0.32), transparent 66%);
-  opacity: 0.75;
-  animation: editorial-sheen-fast 16s linear infinite;
-}
-
-.cosmic-background::after {
-  background-image:
-    linear-gradient(90deg, rgba(30, 44, 78, 0.45), rgba(10, 16, 30, 0.05), rgba(30, 44, 78, 0.45));
-  opacity: 0.65;
-  animation: editorial-band-fast 14s ease-in-out infinite;
-}
-
-.theme-light .cosmic-background {
-  background-color: #f6f2ed;
-  background-image:
-    radial-gradient(1200px 900px at 12% 18%, rgba(190, 210, 230, 0.98), transparent 68%),
-    radial-gradient(1100px 900px at 88% 22%, rgba(210, 218, 206, 0.96), transparent 66%),
-    radial-gradient(1000px 900px at 50% 88%, rgba(236, 224, 210, 0.98), transparent 70%),
-    linear-gradient(145deg, rgba(248, 243, 238, 0.99), rgba(232, 238, 244, 0.97));
-  animation: editorial-flow 18s ease-in-out infinite alternate;
-}
-
-.theme-light .cosmic-background::before {
-  background-image:
-    radial-gradient(900px 720px at 20% 72%, rgba(182, 200, 220, 0.5), transparent 70%),
-    radial-gradient(800px 640px at 80% 32%, rgba(198, 206, 198, 0.45), transparent 66%);
+    linear-gradient(90deg, rgba(206, 222, 236, 0.9), rgba(242, 244, 246, 0.3), rgba(206, 222, 236, 0.9));
   opacity: 0.8;
 }
 
-.theme-light .cosmic-background::after {
-  background-image:
-    linear-gradient(90deg, rgba(210, 224, 236, 0.75), rgba(240, 242, 244, 0.25), rgba(210, 224, 236, 0.75));
-  opacity: 0.7;
-}
-
-@keyframes editorial-flow {
+@keyframes editorial-loom {
   0% {
     background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%;
   }
   100% {
-    background-position: 0% 20%, 100% -18%, 50% 84%, 100% 100%;
+    background-position: 0% 22%, 100% -20%, 50% 82%, 100% 100%;
   }
 }
 
-@keyframes editorial-sheen-fast {
+@keyframes editorial-sheen-rapid {
   0% {
     transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translate3d(0, -12%, 0);
+    transform: translate3d(0, -14%, 0);
   }
 }
 
-@keyframes editorial-band-fast {
+@keyframes editorial-band-rapid {
   0% {
-    transform: translate3d(-14%, 0, 0);
+    transform: translate3d(-16%, 0, 0);
   }
   100% {
-    transform: translate3d(14%, 0, 0);
+    transform: translate3d(16%, 0, 0);
   }
 }
 
