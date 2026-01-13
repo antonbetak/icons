@@ -621,7 +621,9 @@ function App() {
           </div>
           <a
             className="nav-icon glass"
-            href={userProfile ? '#/configuracion' : '#/login'}
+            href={
+              userProfile ? (userProfile.role === 'admin' ? '#/admin' : '#/configuracion') : '#/login'
+            }
             aria-label={userProfile ? 'Configuración' : 'Log in'}
           >
             {userProfile ? (

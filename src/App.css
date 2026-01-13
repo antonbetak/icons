@@ -1466,11 +1466,11 @@ input:focus-visible {
 }
 
 .admin-card {
-  padding: 2rem;
-  border-radius: 22px;
-  border: 1px solid var(--border-strong);
-  background: var(--surface-soft);
-  box-shadow: 0 20px 40px var(--shadow);
+  padding: 1.6rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--border), transparent 40%);
+  background: color-mix(in srgb, var(--surface-soft), transparent 20%);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--shadow), transparent 35%);
   animation: none;
 }
 
@@ -1490,10 +1490,10 @@ input:focus-visible {
 .admin-stat {
   display: grid;
   gap: 0.4rem;
-  padding: 1rem;
-  border-radius: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface), transparent 15%);
+  border: 1px solid color-mix(in srgb, var(--border), transparent 35%);
   animation: none;
 }
 
@@ -1581,10 +1581,10 @@ input:focus-visible {
 .admin-item {
   display: grid;
   gap: 1rem;
-  padding: 1.5rem;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  padding: 1.2rem 1.35rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--border), transparent 35%);
+  background: color-mix(in srgb, var(--surface), transparent 12%);
   animation: none;
 }
 
