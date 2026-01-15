@@ -2075,14 +2075,35 @@ input:focus-visible {
   pointer-events: none;
   background-color: #020202;
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0 1px, transparent 2.5px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.18) 0 1px, transparent 3px),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 26px),
-    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 26px),
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 68% 22%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2.5px),
+    radial-gradient(circle at 84% 64%, rgba(255, 255, 255, 0.42) 0 1px, transparent 2.6px),
+    radial-gradient(circle at 26% 72%, rgba(255, 255, 255, 0.35) 0 1px, transparent 2.7px),
+    radial-gradient(circle at 48% 46%, rgba(255, 255, 255, 0.3) 0 1px, transparent 2.8px),
+    radial-gradient(circle at 90% 14%, rgba(255, 255, 255, 0.25) 0 1px, transparent 3px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 30px),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 30px),
     linear-gradient(150deg, #050505, #020202 55%, #060606);
-  background-size: 140px 140px, 220px 220px, 320px 320px, 48px 48px, 48px 48px, 100% 100%;
-  background-position: 0 0, 40px 60px, 120px 180px, 0 0, 24px 24px, 0 0;
+  background-size:
+    180px 200px,
+    260px 240px,
+    320px 280px,
+    240px 260px,
+    300px 320px,
+    360px 340px,
+    52px 52px,
+    52px 52px,
+    100% 100%;
+  background-position:
+    0 0,
+    120px 40px,
+    40px 160px,
+    180px 220px,
+    80px 120px,
+    200px 20px,
+    0 0,
+    26px 26px,
+    0 0;
   animation: editorial-loom 30s ease-in-out infinite;
 }
 
