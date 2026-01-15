@@ -200,6 +200,10 @@ input:focus-visible {
   flex-wrap: wrap;
 }
 
+.top-nav.top-nav-home {
+  justify-content: flex-end;
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
