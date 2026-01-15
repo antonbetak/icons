@@ -420,7 +420,7 @@ input:focus-visible {
   border: none;
   padding: 0;
   text-align: left;
-  font: inherit;
+  font-family: inherit;
   cursor: pointer;
 }
 
