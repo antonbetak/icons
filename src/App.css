@@ -309,6 +309,9 @@ input:focus-visible {
   justify-content: center;
   text-decoration: none;
   position: relative;
+  padding: 0;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .nav-icon svg {

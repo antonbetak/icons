@@ -655,7 +655,10 @@ function App() {
               <button
                 className="nav-icon glass"
                 type="button"
-                onClick={() => setUserMenuOpen((open) => !open)}
+                onClick={() => {
+                  setUserMenuOpen((open) => !open)
+                  setMenuOpen(false)
+                }}
                 aria-expanded={userMenuOpen}
                 aria-controls="user-menu"
                 aria-label="Perfil"
