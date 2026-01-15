@@ -299,6 +299,8 @@ input:focus-visible {
 
 .nav-menu-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .nav-icon {
@@ -312,6 +314,7 @@ input:focus-visible {
   padding: 0;
   line-height: 1;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .nav-icon svg {
