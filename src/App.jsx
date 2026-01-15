@@ -149,6 +149,7 @@ const getRoute = () => {
 function App() {
   const [route, setRoute] = useState(getRoute())
   const [menuOpen, setMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [themeMode, setThemeMode] = useState('system')
   const [systemTheme, setSystemTheme] = useState(() => {
     if (typeof window === 'undefined') return 'dark'
@@ -215,6 +216,7 @@ function App() {
     const value = Number(item.price.replace(/[^0-9.]/g, ''))
     return sum + value
   }, 0)
+  const isDemoUser = userProfile?.email === demoUser.email
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRoute())
@@ -224,6 +226,7 @@ function App() {
 
   useEffect(() => {
     setMenuOpen(false)
+    setUserMenuOpen(false)
   }, [route])
 
   useEffect(() => {
@@ -629,7 +632,10 @@ function App() {
             <button
               className="nav-toggle glass"
               type="button"
-              onClick={() => setMenuOpen((open) => !open)}
+              onClick={() => {
+                setMenuOpen((open) => !open)
+                setUserMenuOpen(false)
+              }}
               aria-expanded={menuOpen}
               aria-controls="menu"
             >
@@ -644,28 +650,73 @@ function App() {
               ))}
             </div>
           </div>
-          <a
-            className="nav-icon glass"
-            href={
-              userProfile ? (userProfile.role === 'admin' ? '#/admin' : '#/configuracion') : '#/login'
-            }
-            aria-label={userProfile ? 'Configuración' : 'Log in'}
-          >
-            {userProfile ? (
-              <span className="nav-avatar">
-                {userProfile.avatar ? (
-                  <img src={userProfile.avatar} alt="Avatar" />
-                ) : (
-                  userProfile.email.charAt(0).toUpperCase()
-                )}
-              </span>
-            ) : (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
-              </svg>
-            )}
-          </a>
+          {userProfile && isDemoUser ? (
+            <div className="nav-menu-wrap">
+              <button
+                className="nav-icon glass"
+                type="button"
+                onClick={() => setUserMenuOpen((open) => !open)}
+                aria-expanded={userMenuOpen}
+                aria-controls="user-menu"
+                aria-label="Perfil"
+              >
+                <span className="nav-avatar font-gothic">
+                  {userProfile.avatar ? (
+                    <img src={userProfile.avatar} alt="Avatar" />
+                  ) : (
+                    userProfile.email.charAt(0).toUpperCase()
+                  )}
+                </span>
+              </button>
+              <div className={`nav-menu glass ${userMenuOpen ? 'is-open' : ''}`} id="user-menu">
+                <a
+                  href="#/configuracion"
+                  onClick={() => {
+                    setUserMenuOpen(false)
+                    window.location.hash = '#/configuracion'
+                  }}
+                >
+                  Configuración
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserMenuOpen(false)
+                    handleLogout()
+                  }}
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            </div>
+          ) : (
+            <a
+              className="nav-icon glass"
+              href={
+                userProfile
+                  ? userProfile.role === 'admin'
+                    ? '#/admin'
+                    : '#/configuracion'
+                  : '#/login'
+              }
+              aria-label={userProfile ? 'Configuración' : 'Log in'}
+            >
+              {userProfile ? (
+                <span className="nav-avatar font-gothic">
+                  {userProfile.avatar ? (
+                    <img src={userProfile.avatar} alt="Avatar" />
+                  ) : (
+                    userProfile.email.charAt(0).toUpperCase()
+                  )}
+                </span>
+              ) : (
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c1.8-3.5 5.2-5 8-5s6.2 1.5 8 5" />
+                </svg>
+              )}
+            </a>
+          )}
           <a className="nav-icon glass" href="#/carrito" aria-label="Carrito">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 7h12l-1.4 10H7.4L6 7z" />
@@ -1172,7 +1223,9 @@ function App() {
                       {profileAvatar ? (
                         <img src={profileAvatar} alt="Avatar" />
                       ) : (
-                        <span>{(userProfile?.email?.charAt(0) ?? 'U').toUpperCase()}</span>
+                        <span className="font-gothic">
+                          {(userProfile?.email?.charAt(0) ?? 'U').toUpperCase()}
+                        </span>
                       )}
                     </div>
                     <div className="payment-grid">
