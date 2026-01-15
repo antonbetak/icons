@@ -2111,12 +2111,9 @@ input:focus-visible {
   content: '';
   position: absolute;
   inset: -12%;
-  background-image:
-    radial-gradient(800px 620px at 20% 18%, rgba(255, 255, 255, 0.14), transparent 70%),
-    radial-gradient(720px 540px at 78% 28%, rgba(255, 255, 255, 0.12), transparent 68%),
-    radial-gradient(640px 520px at 48% 82%, rgba(255, 255, 255, 0.1), transparent 70%);
+  background-image: none;
   mix-blend-mode: screen;
-  opacity: 0.72;
+  opacity: 0;
   animation: none;
 }
 
