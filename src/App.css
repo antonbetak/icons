@@ -83,6 +83,15 @@
   animation: ambient-drift 7.5s ease-out 1;
 }
 
+.page:not(.theme-light) {
+  animation: none;
+}
+
+.page:not(.theme-light)::before,
+.page:not(.theme-light)::after {
+  animation: none;
+}
+
 @keyframes base-shift {
   0% {
     background-position: 0% 0%;

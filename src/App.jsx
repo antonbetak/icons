@@ -619,9 +619,11 @@ function App() {
     >
       <div className="cosmic-background" aria-hidden="true" />
       <header className="top-nav">
-        <a className="brand font-gothic" href="#/">
-          ICONS
-        </a>
+        {route !== '/' && (
+          <a className="brand font-gothic" href="#/">
+            ICONS
+          </a>
+        )}
         <div className="nav-actions">
           <div className="nav-menu-wrap">
             <button
